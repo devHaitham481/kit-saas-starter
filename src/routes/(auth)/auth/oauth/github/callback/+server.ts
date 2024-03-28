@@ -97,7 +97,6 @@ export const GET: RequestHandler = async ({ url, cookies, locals: { db, lucia } 
             .set({
               name: githubUser.name,
               avatarUrl: githubUser.avatar_url,
-              modifiedAt: new Date(),
               authMethods
             })
             .where(eq(users.id, existingUser.id))

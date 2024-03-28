@@ -34,7 +34,7 @@ CREATE TABLE `users` (
 	`is_verified` integer DEFAULT false NOT NULL,
 	`is_admin` integer DEFAULT false NOT NULL,
 	`created_at` integer NOT NULL,
-	`modified_at` integer
+	`modified_at` integer DEFAULT null
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `users_email_unique` ON `users` (`email`);--> statement-breakpoint

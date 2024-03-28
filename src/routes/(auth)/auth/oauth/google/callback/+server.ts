@@ -85,7 +85,6 @@ export const GET: RequestHandler = async ({ cookies, url, locals: { db, lucia } 
             .set({
               name: googleUser.name,
               avatarUrl: googleUser.picture,
-              modifiedAt: new Date(),
               authMethods
             })
             .where(eq(users.id, existingUser.id))

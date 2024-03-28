@@ -58,8 +58,6 @@ export async function getUserByUsername(db: Database, username: string): Promise
 export async function updateUserById(db: Database, id: string, userData: DbUpdateUser): Promise<DbUser | undefined> {
   if (!id) return;
 
-  userData.modifiedAt = new Date();
-
   const res = await db.update(users).set(userData).where(eq(users.id, id)).returning();
 
   if (res.length === 0) return;

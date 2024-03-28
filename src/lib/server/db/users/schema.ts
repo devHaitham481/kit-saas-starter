@@ -1,6 +1,7 @@
 import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 import { USER_ID_LEN } from "../../../configs/fields-length";
 import { AUTH_METHODS } from "../../../configs/auth-methods";
+import { sql } from "drizzle-orm";
 
 export const users = sqliteTable("users", {
   id: text("id", { length: USER_ID_LEN }).notNull().primaryKey(),
@@ -16,4 +17,6 @@ export const users = sqliteTable("users", {
     .notNull()
     .$default(() => new Date()),
   modifiedAt: integer("modified_at", { mode: "timestamp_ms" })
+    .default(sql`null`)
+    .$onUpdate(() => new Date())
 });

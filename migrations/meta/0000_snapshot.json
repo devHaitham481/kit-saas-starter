@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "f3d3642f-823b-4c45-8ef6-e681cb5cdff1",
+  "id": "9bf098d3-0d2d-4530-b32d-3252625fdc26",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "oauth_accounts": {
@@ -245,7 +245,8 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false
+          "autoincrement": false,
+          "default": "null"
         }
       },
       "indexes": {
