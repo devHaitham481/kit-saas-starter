@@ -4,7 +4,7 @@
 
   type Props = { action: string; resetTurnstile: () => void | undefined };
 
-  let { action, resetTurnstile }: Props = $props();
+  let { action, resetTurnstile = $bindable() }: Props = $props();
 
   const siteKey = PUBLIC_CLOUDFLARE_TURNSTILE_KEY;
   const formsField = "turnstileToken";

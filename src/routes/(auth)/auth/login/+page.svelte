@@ -75,7 +75,7 @@
       {#if $delayed}
         <Loader2 class="mr-2 h-4 w-4 animate-spin" /> {m.core_form_shared_label_loading()}
       {:else}
-        {m.core_form_shared_label_verify()}
+        {m.core_form_shared_label_login()}
       {/if}
     </Form.Button>
   </form>

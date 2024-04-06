@@ -38,13 +38,7 @@ Entirely hosted on [Cloudflare](https://www.cloudflare.com/). Why?
 
 🛆 [Lucia](https://github.com/lucia-auth/lucia) - A fully typed auth library
 
-💅🏻 [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss) - For styling
-
-[Bits UI](https://github.com/huntabyte/bits-ui) + [shadcn-svelte](https://github.com/huntabyte/shadcn-svelte)
-
-🔄 [@total-typescript/ts-reset](https://github.com/total-typescript/ts-reset) - A 'CSS reset' for TypeScript, improving types for common JavaScript API's
-
-🛣️ [vite-plugin-kit-routes](https://github.com/jycouet/kitql/tree/main/packages/vite-plugin-kit-routes) - Fully typed routes!
+💅🏻 [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss) + [Bits UI](https://github.com/huntabyte/bits-ui) + [shadcn-svelte](https://github.com/huntabyte/shadcn-svelte) - For styling
 
 ⚡ [formsnap](https://github.com/svecosystem/formsnap) + [sveltekit-superforms](https://github.com/ciscoheat/sveltekit-superforms) + [zod](https://github.com/colinhacks/zod) = Amazing forms
 
@@ -52,7 +46,11 @@ Entirely hosted on [Cloudflare](https://www.cloudflare.com/). Why?
 
 🌲 [pino](https://github.com/pinojs/pino) - Logging for client and server side
 
-[Paraglide JS](https://inlang.com/m/gerre34r/library-inlang-paraglideJs) - i18n
+🪂 [Paraglide JS](https://inlang.com/m/gerre34r/library-inlang-paraglideJs) - i18n
+
+🔄 [@total-typescript/ts-reset](https://github.com/total-typescript/ts-reset) - A 'CSS reset' for TypeScript, improving types for common JavaScript API's
+
+🛣️ [vite-plugin-kit-routes](https://github.com/jycouet/kitql/tree/main/packages/vite-plugin-kit-routes) - Fully typed routes!
 
 ## How to use
 
