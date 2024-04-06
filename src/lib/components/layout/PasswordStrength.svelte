@@ -2,6 +2,7 @@
   import { slide } from "svelte/transition";
   import type { Result } from "check-password-strength";
   import { Check, X } from "lucide-svelte";
+  import * as m from "$paraglide/messages";
 
   type Props = { pwd: Result<string>; myData: Array<{ name: string; isDone: boolean }> };
 
@@ -24,10 +25,10 @@
 <div transition:slide class="rounded-lg border py-2 pl-4">
   <div id="hs-strong-password-hints">
     <div>
-      <span class="text-sm text-gray-800 dark:text-gray-200">Level: <span class="font-bold">{pwd.value}</span></span>
+      <span class="text-sm text-gray-800 dark:text-gray-200">{m.core_form_shared_label_level()} <span class="font-bold">{pwd.value}</span></span>
     </div>
 
-    <h4 class="my-2 text-sm text-gray-800 dark:text-white">Your password must contain:</h4>
+    <h4 class="my-2 text-sm text-gray-800 dark:text-white">{m.core_form_shared_label_passwordMustContain()}</h4>
 
     <ul class="space-y-1 text-sm text-gray-500">
       {#each myData as { name, isDone }}

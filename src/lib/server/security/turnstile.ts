@@ -1,5 +1,6 @@
 import { CLOUDFLARE_TURNSTILE_SECRET } from "$env/static/private";
 import { logger } from "$lib/logger";
+import * as m from "$paraglide/message";
 
 interface TokenValidateResponse {
   "error-codes": string[];
@@ -36,13 +37,13 @@ export async function validateTurnstileToken(token: string, ip: string): Promise
   } catch (error) {
     logger.error("An error occurred during token validation:", error);
 
-    return { success: false, error: "An error occurred during token validation" };
+    return { success: false, error: m.flash_tokenValidationError() };
   }
 
   if (!response.ok) {
     logger.error("An error occurred during token validation");
 
-    return { success: false, error: "An error occurred during token validation" };
+    return { success: false, error: m.flash_tokenValidationError() };
   }
 
   const data = await response.json<TokenValidateResponse>();

@@ -1,7 +1,6 @@
 <script lang="ts">
   import * as Card from "$lib/components/ui/card";
   import * as Form from "$lib/components/ui/form";
-  import { APP_NAME } from "$configs/general";
   import { route } from "$lib/ROUTES";
   import Input from "$components/ui/input/input.svelte";
   import { superForm } from "sveltekit-superforms";
@@ -11,6 +10,7 @@
   import Turnstile from "$components/layout/Turnstile.svelte";
   import { Loader2 } from "lucide-svelte";
   import { enhance } from "$app/forms";
+  import * as m from "$paraglide/messages";
 
   let { data } = $props();
 
@@ -30,16 +30,16 @@
 </script>
 
 <Card.Header class="space-y-1">
-  <Card.Title class="text-2xl">Confirm your email address</Card.Title>
+  <Card.Title class="text-2xl">{m.auth_verifyEmail_title()}</Card.Title>
 </Card.Header>
 <Card.Content class="grid gap-4">
   <div class="text-muted-foreground">
-    Please check your email account for a message to confirm your email address for {APP_NAME}.
+    {m.auth_verifyEmail_description()}
   </div>
   <form class="flex flex-col" method="post" action={route("confirm /auth/verify-email")} use:enhanceConfirmForm>
     <Form.Field {form} name="token" class="space-y-1">
       <Form.Control let:attrs>
-        <Form.Label>Token</Form.Label>
+        <Form.Label>{m.core_form_shared_label_token()}</Form.Label>
         <Input {...attrs} type="text" bind:value={$formData.token} />
       </Form.Control>
       <Form.FieldErrors class="h-4 text-xs" />
@@ -47,17 +47,16 @@
     <Turnstile action={"verify-email"} bind:resetTurnstile />
     <Form.Button type="submit" disabled={$delayed}>
       {#if $delayed}
-        <Loader2 class="mr-2 h-4 w-4 animate-spin" /> Loading...
+        <Loader2 class="mr-2 h-4 w-4 animate-spin" /> {m.core_form_shared_label_loading()}
       {:else}
-        Verify
+        {m.core_form_shared_label_verify()}
       {/if}
     </Form.Button>
   </form>
 </Card.Content>
 <Card.Footer>
-  If you did not receive the email,
+  {m.core_form_shared_emailNotReceived()}
   <form class="mx-1 flex flex-col" method="post" action={route("resendEmail /auth/verify-email")} use:enhance>
-    <button type="submit" class="underline">click here</button>
+    <button type="submit" class="underline">{m.core_form_shared_label_resendEmail()}</button>
   </form>
-  to resend it.
 </Card.Footer>

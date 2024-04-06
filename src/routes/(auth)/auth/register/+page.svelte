@@ -14,6 +14,7 @@
   import { GitHub, Google } from "$components/icons";
   import Turnstile from "$components/layout/Turnstile.svelte";
   import { Loader2 } from "lucide-svelte";
+  import * as m from "$paraglide/messages";
 
   let { data } = $props();
 
@@ -36,19 +37,19 @@
   let resetTurnstile = $state(() => {});
 
   const customOptions: [FirstOption<string>, ...Option<string>[]] = [
-    { id: 0, value: "Too weak", minDiversity: 0, minLength: 0 },
-    { id: 1, value: "Weak", minDiversity: 2, minLength: 6 },
-    { id: 2, value: "Medium", minDiversity: 3, minLength: 8 },
-    { id: 3, value: "Strong", minDiversity: 4, minLength: 10 }
+    { id: 0, value: m.validation_password_strength_tooWeak(), minDiversity: 0, minLength: 0 },
+    { id: 1, value: m.validation_password_strength_weak(), minDiversity: 2, minLength: 6 },
+    { id: 2, value: m.validation_password_strength_medium(), minDiversity: 3, minLength: 8 },
+    { id: 3, value: m.validation_password_strength_strong(), minDiversity: 4, minLength: 10 }
   ];
 
   let pwd: Result<string> = $state(passwordStrength($formData.password, customOptions));
   let myData: Array<{ name: string; isDone: boolean }> = $derived([
-    { name: "Minimum number of characters is 10.", isDone: pwd.length >= 10 },
-    { name: "Should contain lowercase.", isDone: pwd.contains.includes("lowercase") },
-    { name: "Should contain uppercase.", isDone: pwd.contains.includes("uppercase") },
-    { name: "Should contain numbers.", isDone: pwd.contains.includes("number") },
-    { name: "Should contain special characters.", isDone: pwd.contains.includes("symbol") }
+    { name: m.validation_password_options_longerThan({ characters: 10 }), isDone: pwd.length >= 10 },
+    { name: m.validation_password_options_containsLowercases(), isDone: pwd.contains.includes("lowercase") },
+    { name: m.validation_password_options_containsUppercases(), isDone: pwd.contains.includes("uppercase") },
+    { name: m.validation_password_options_containsNumbers(), isDone: pwd.contains.includes("number") },
+    { name: m.validation_password_options_containsSpecialCharacters(), isDone: pwd.contains.includes("symbol") }
   ]);
 
   $effect(() => {
@@ -57,17 +58,17 @@
 </script>
 
 <Card.Header class="space-y-1">
-  <Card.Title class="text-2xl">Create an account</Card.Title>
+  <Card.Title class="text-2xl">{m.auth_register_title()}</Card.Title>
 </Card.Header>
 <Card.Content class="grid gap-4">
   <div class="grid grid-cols-2 gap-6">
     <Button variant="outline" href={route("GET /auth/oauth/github")}>
       <GitHub class="mr-2 h-4 w-4" />
-      GitHub
+      {m.core_form_shared_label_github()}
     </Button>
     <Button variant="outline" href={route("GET /auth/oauth/google")}>
       <Google class="mr-2 h-4 w-4" />
-      Google
+      {m.core_form_shared_label_google()}
     </Button>
   </div>
   <div class="relative">
@@ -75,35 +76,27 @@
       <span class="w-full border-t" />
     </div>
     <div class="relative flex justify-center text-xs uppercase">
-      <span class="bg-card px-2 text-muted-foreground"> or register with </span>
+      <span class="bg-card px-2 text-muted-foreground"> {m.auth_register_textSeparator()} </span>
     </div>
   </div>
   <form class="flex flex-col gap-2" method="post" use:enhance>
     <Form.Field {form} name="name" class="space-y-1">
       <Form.Control let:attrs>
-        <Form.Label>Name</Form.Label>
+        <Form.Label>{m.core_form_shared_label_name()}</Form.Label>
         <Input {...attrs} type="name" bind:value={$formData.name} />
       </Form.Control>
-      <Form.FieldErrors let:errors class="h-4 text-xs">
-        {#if errors[0]}
-          {errors[0]}
-        {/if}
-      </Form.FieldErrors>
+      <Form.FieldErrors class="h-4 text-xs" />
     </Form.Field>
     <Form.Field {form} name="email" class="space-y-1">
       <Form.Control let:attrs>
-        <Form.Label>Email</Form.Label>
+        <Form.Label>{m.core_form_shared_label_email()}</Form.Label>
         <Input {...attrs} type="email" bind:value={$formData.email} />
       </Form.Control>
-      <Form.FieldErrors let:errors class="h-4 text-xs">
-        {#if errors[0]}
-          {errors[0]}
-        {/if}
-      </Form.FieldErrors>
+      <Form.FieldErrors class="h-4 text-xs" />
     </Form.Field>
     <Form.Field {form} name="password" class="relative mb-2 space-y-1">
       <Form.Control let:attrs>
-        <Form.Label>Password</Form.Label>
+        <Form.Label>{m.core_form_shared_label_password()}</Form.Label>
         <Input
           {...attrs}
           type={passwordInputType}
@@ -130,7 +123,7 @@
     </Form.Field>
     <Form.Field {form} name="passwordConfirm" class="space-y-1">
       <Form.Control let:attrs>
-        <Form.Label>Password Confirm</Form.Label>
+        <Form.Label>{m.core_form_shared_label_passwordConfirm()}</Form.Label>
         <Input {...attrs} type="password" bind:value={$formData.passwordConfirm} />
       </Form.Control>
       <Form.FieldErrors let:errors class="h-4 text-xs">
@@ -142,15 +135,15 @@
     <Turnstile action={"register"} bind:resetTurnstile />
     <Form.Button type="submit" class="mt-4" disabled={$delayed}>
       {#if $delayed}
-        <Loader2 class="mr-2 h-4 w-4 animate-spin" /> Loading...
+        <Loader2 class="mr-2 h-4 w-4 animate-spin" /> {m.core_form_shared_label_loading()}
       {:else}
-        Create account
+        {m.core_form_shared_label_verify()}
       {/if}
     </Form.Button>
   </form>
 </Card.Content>
 <Card.Footer>
   <p class="text-sm">
-    Already have an account? <a href={route("/auth/login")} class="font-medium hover:underline">Login</a>
+    {m.auth_register_footer()} <a href={route("/auth/login")} class="font-medium hover:underline">{m.core_form_shared_label_login()}</a>
   </p>
 </Card.Footer>

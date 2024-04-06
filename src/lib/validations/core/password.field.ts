@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { PASSWORD_MIN_LEN, PASSWORD_MAX_LEN } from "$configs/fields-length";
+import * as m from "$paraglide/messages";
 
 /**
  * This regex checks if the password is between PASSWORD_MIN_LEN and PASSWORD_MAX_LEN characters.
@@ -14,11 +15,9 @@ const passwordRegex = new RegExp(
 );
 
 const passwordField = z
-  .string({ required_error: "Password is required" })
-  .regex(passwordRegex, {
-    message: "Password must be at least 8 characters and must contain at least 1 capital letter, 1 number and 1 special character"
-  })
-  .min(PASSWORD_MIN_LEN, { message: `Password must be at least ${PASSWORD_MIN_LEN} characters` })
-  .max(PASSWORD_MAX_LEN, { message: `Password must not exceed ${PASSWORD_MAX_LEN} characters` });
+  .string({ required_error: m.validation_password_isRequired() })
+  .regex(passwordRegex, { message: m.validation_password_isValid() })
+  .min(PASSWORD_MIN_LEN, { message: m.validation_password_minLength({ min: PASSWORD_MIN_LEN }) })
+  .max(PASSWORD_MAX_LEN, { message: m.validation_password_maxLength({ max: PASSWORD_MAX_LEN }) });
 
 export { passwordField };

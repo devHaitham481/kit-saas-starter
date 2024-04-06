@@ -13,6 +13,7 @@ import { isAnonymous, validateTurnstileToken, verifyRateLimiter } from "$lib/ser
 import { loginLimiter } from "$configs/rate-limiters/auth";
 import { FLASH_MESSAGE_STATUS } from "$configs/general";
 import { fail } from "@sveltejs/kit";
+import * as m from "$paraglide/messages";
 
 export const load: PageServerLoad = async ({ locals }) => {
   isAnonymous(locals);
@@ -29,9 +30,9 @@ export const actions: Actions = {
 
     isAnonymous(locals);
 
-    const retryAfter = await verifyRateLimiter(event, loginLimiter);
-    if (retryAfter) {
-      flashMessage.text = `Too many requests, retry in ${retryAfter} minutes`;
+    const minutes = await verifyRateLimiter(event, loginLimiter);
+    if (minutes) {
+      flashMessage.text = m.core_form_shared_tooManyRequest({ minutes });
       logger.debug(flashMessage.text);
 
       setFlash(flashMessage, cookies);
@@ -44,7 +45,7 @@ export const actions: Actions = {
     form.data.password = "";
 
     if (!form.valid) {
-      flashMessage.text = "Invalid form";
+      flashMessage.text = m.core_form_shared_invalidForm();
       logger.debug(flashMessage.text);
 
       return message(form, flashMessage);
@@ -53,7 +54,7 @@ export const actions: Actions = {
     const ip = getClientAddress();
     const validatedTurnstileToken = await validateTurnstileToken(turnstileToken, ip);
     if (!validatedTurnstileToken.success) {
-      flashMessage.text = "Invalid turnstile";
+      flashMessage.text = m.core_form_shared_invalidTurnstile();
       logger.debug(validatedTurnstileToken.error, flashMessage.text);
 
       return message(form, flashMessage, { status: 400 });
@@ -61,14 +62,14 @@ export const actions: Actions = {
 
     const existingUser = await getUserByEmail(locals.db, email);
     if (!existingUser) {
-      flashMessage.text = "User not found";
+      flashMessage.text = m.core_form_shared_invalidEmailOrPassword();
       logger.debug(flashMessage.text);
 
       return message(form, flashMessage, { status: 400 });
     }
 
     if (!existingUser.password && !existingUser.authMethods.includes(AUTH_METHODS.EMAIL)) {
-      flashMessage.text = "You registered with an OAuth provider. Please use the appropriate login method.";
+      flashMessage.text = m.auth_login_registeredWithOauth();
       logger.debug(flashMessage.text);
 
       return message(form, flashMessage, { status: 403 });
@@ -76,7 +77,7 @@ export const actions: Actions = {
 
     const validPassword = await verifyPassword(password, existingUser.password ?? "");
     if (!validPassword) {
-      flashMessage.text = "Invalid password";
+      flashMessage.text = m.core_form_shared_invalidEmailOrPassword();
       logger.debug(flashMessage.text);
 
       return message(form, flashMessage, { status: 400 });

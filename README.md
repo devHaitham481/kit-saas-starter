@@ -52,6 +52,8 @@ Entirely hosted on [Cloudflare](https://www.cloudflare.com/). Why?
 
 🌲 [pino](https://github.com/pinojs/pino) - Logging for client and server side
 
+[Paraglide JS](https://inlang.com/m/gerre34r/library-inlang-paraglideJs) - i18n
+
 ## How to use
 
 Clone this repo with

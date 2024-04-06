@@ -13,6 +13,7 @@ import { TOKEN_TYPE } from "$lib/server/db/tokens";
 import { isAnonymous, validateTurnstileToken, verifyRateLimiter } from "$lib/server/security";
 import { resetPasswordLimiter } from "$configs/rate-limiters/auth";
 import { FLASH_MESSAGE_STATUS } from "$configs/general";
+import * as m from "$paraglide/messages";
 
 export const load = (async ({ locals }) => {
   isAnonymous(locals);
@@ -29,9 +30,9 @@ export const actions: Actions = {
 
     isAnonymous(locals);
 
-    const retryAfter = await verifyRateLimiter(event, resetPasswordLimiter);
-    if (retryAfter) {
-      flashMessage.text = `Too many requests, retry in ${retryAfter} minutes`;
+    const minutes = await verifyRateLimiter(event, resetPasswordLimiter);
+    if (minutes) {
+      flashMessage.text = m.core_form_shared_tooManyRequest({ minutes });
       logger.debug(flashMessage.text);
 
       setFlash(flashMessage, cookies);
@@ -40,7 +41,7 @@ export const actions: Actions = {
 
     const form = await superValidate<ResetPasswordFormSchemaFirstStep, FlashMessage>(request, zod(resetPasswordFormSchemaFirstStep));
     if (!form.valid) {
-      flashMessage.text = "Invalid form";
+      flashMessage.text = m.core_form_shared_invalidForm();
       logger.debug(flashMessage.text);
 
       return message(form, flashMessage);
@@ -51,7 +52,7 @@ export const actions: Actions = {
 
     const validatedTurnstileToken = await validateTurnstileToken(turnstileToken, ip);
     if (!validatedTurnstileToken.success) {
-      flashMessage.text = "Invalid turnstile";
+      flashMessage.text = m.core_form_shared_invalidTurnstile();
       logger.debug(validatedTurnstileToken.error, flashMessage.text);
 
       return message(form, flashMessage, { status: 400 });
@@ -60,7 +61,7 @@ export const actions: Actions = {
     const userFromDb = await getUserByEmail(locals.db, email);
     if (!userFromDb) {
       flashMessage.status = FLASH_MESSAGE_STATUS.SUCCESS;
-      flashMessage.text = "Email sent successfully";
+      flashMessage.text = m.core_form_shared_emailSentSuccessfully();
 
       // we send a success message even if the user doesn't exist to prevent email enumeration
       redirect(route("/"), flashMessage, cookies);
@@ -70,22 +71,22 @@ export const actions: Actions = {
 
     const newToken = await generateToken(locals.db, userId, email, TOKEN_TYPE.PASSWORD_RESET);
     if (!newToken) {
-      flashMessage.text = "Failed to generate token";
-      logger.debug(flashMessage.text);
+      flashMessage.text = m.core_form_shared_failedToGenerateToken();
+      logger.error(flashMessage.text);
 
       return message(form, flashMessage, { status: 500 });
     }
 
     const mailSent = await sendPasswordResetEmail(email, newToken.token);
     if (!mailSent) {
-      flashMessage.text = "Failed to send email";
+      flashMessage.text = m.core_form_shared_failedToSendEmail();
       logger.debug(flashMessage.text);
 
       return message(form, flashMessage, { status: 500 });
     }
 
     flashMessage.status = FLASH_MESSAGE_STATUS.SUCCESS;
-    flashMessage.text = "Email sent successfully";
+    flashMessage.text = m.core_form_shared_emailSentSuccessfully();
 
     redirect(route("/auth/reset-password/[userId=userId]", { userId }), flashMessage, cookies);
   }

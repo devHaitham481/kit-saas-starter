@@ -8,6 +8,8 @@
   import type { User } from "lucia";
   import { enhance } from "$app/forms";
   import { route } from "$lib/ROUTES";
+  import LanguageSwitcher from "$components/layout/LanguageSwitcher.svelte";
+  import * as m from "$paraglide/messages";
 
   type Props = { user: User | null };
 
@@ -31,27 +33,28 @@
       {/each}
     </ul>
     <div class="flex gap-2">
+      <LanguageSwitcher />
       <Button on:click={toggleMode} variant="outline" size="icon">
         <Sun color="black" class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
         <Moon color="white" class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-        <span class="sr-only">Toggle theme</span>
+        <span class="sr-only">{m.landing_header_toggleTheme()}</span>
       </Button>
       {#if user}
         <form method="post" action="/auth/logout" use:enhance>
-          <Button type="submit" variant="outline">Logout</Button>
+          <Button type="submit" variant="outline">{m.core_form_shared_label_logout()}</Button>
         </form>
         <Button href={route("/app/dashboard")}>
-          Dashboard
-          <span class="sr-only">Dashboard</span>
+          {m.core_form_shared_label_dashboard()}
+          <span class="sr-only">{m.core_form_shared_label_dashboard()}</span>
         </Button>
       {:else}
         <Button href={route("/auth/login")} variant="secondary">
-          Login
-          <span class="sr-only">Login</span>
+          {m.core_form_shared_label_login()}
+          <span class="sr-only">{m.core_form_shared_label_login()}</span>
         </Button>
         <Button href={route("/auth/register")}>
-          Register
-          <span class="sr-only">Register</span>
+          {m.core_form_shared_label_register()}
+          <span class="sr-only">{m.core_form_shared_label_register()}</span>
         </Button>
       {/if}
     </div>

@@ -12,6 +12,7 @@ import { getUserByEmail, users } from "$lib/server/db/users";
 import { getOAuthAccountByProviderUserId, oauthAccounts } from "$lib/server/db/oauth-accounts";
 import { createAndSetSession } from "$lib/server/auth/auth-utils";
 import { eq } from "drizzle-orm";
+import * as m from "$paraglide/messages";
 
 type GoogleUser = {
   sub: string;
@@ -33,7 +34,7 @@ export const GET: RequestHandler = async ({ cookies, url, locals: { db, lucia } 
 
   // validate OAuth state and code verifier
   if (!code || !state || !stateCookie || !codeVerifierCookie || state !== stateCookie) {
-    error(400, "Invalid OAuth state or code verifier");
+    error(400, m.auth_oauth_invalid());
   }
 
   try {
@@ -48,11 +49,11 @@ export const GET: RequestHandler = async ({ cookies, url, locals: { db, lucia } 
     const googleUser = (await googleUserResponse.json()) as GoogleUser;
 
     if (!googleUser.email) {
-      error(400, "No primary email address");
+      error(400, m.auth_oauth_noPrimaryEmail());
     }
 
     if (!googleUser.email_verified) {
-      error(400, "Unverified email");
+      error(400, m.auth_oauth_unverifiedEmail());
     }
 
     // check if the user already exists

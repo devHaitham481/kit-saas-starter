@@ -1,4 +1,5 @@
 import { z } from "zod";
+import * as m from "$paraglide/messages";
 
 // no need to add validation, because this field depends on password one
 const passwordConfirmField = z.string({ required_error: "Password confirm is required" });
@@ -9,12 +10,12 @@ const passwordConfirmMustBeEqualToPassword = ({ password, passwordConfirm }: Equ
   if (passwordConfirm.length > 0 && password !== passwordConfirm) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
-      message: "Password and password confirm must match",
+      message: m.validation_passwordConfirm_mismatch(),
       path: ["password"]
     });
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
-      message: "Password and password confirm must match",
+      message: m.validation_passwordConfirm_mismatch(),
       path: ["passwordConfirm"]
     });
   }

@@ -7,12 +7,13 @@ import { logger } from "$lib/logger";
 import { superValidate } from "sveltekit-superforms";
 import { updateUserFormSchema, type UpdateUserFormSchema } from "$validations/admin/database/users.schema";
 import { zod } from "sveltekit-superforms/adapters";
+import * as m from "$paraglide/messages";
 
 export const load = (async ({ locals, params }) => {
   const { userId } = params;
   const user = await getUserById(locals.db, userId);
   if (!user) {
-    error(404, "User not found");
+    error(404, m.core_form_shared_userNotFound());
   }
 
   const form = await superValidate<UpdateUserFormSchema, FlashMessage>(user, zod(updateUserFormSchema));

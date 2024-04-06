@@ -12,6 +12,7 @@ import { logger } from "$lib/logger";
 import { redirect } from "sveltekit-flash-message/server";
 import { AUTH_METHODS } from "$configs/auth-methods";
 import { eq } from "drizzle-orm";
+import * as m from "$paraglide/messages";
 
 type GitHubUser = {
   id: number;
@@ -33,7 +34,7 @@ export const GET: RequestHandler = async ({ url, cookies, locals: { db, lucia } 
   const storedState = cookies.get(GITHUB_OAUTH_STATE_COOKIE_NAME);
 
   if (!code || !state || !storedState || state !== storedState) {
-    error(400, "Invalid OAuth state or code verifier");
+    error(400, m.auth_oauth_invalid());
   }
 
   try {
@@ -60,11 +61,11 @@ export const GET: RequestHandler = async ({ url, cookies, locals: { db, lucia } 
     const primaryEmail = githubEmail.find((email) => email.primary) ?? null;
 
     if (!primaryEmail) {
-      error(400, "No primary email address");
+      error(400, m.auth_oauth_noPrimaryEmail());
     }
 
     if (!primaryEmail.verified) {
-      error(400, "Unverified email");
+      error(400, m.auth_oauth_unverifiedEmail());
     }
 
     // check if the user already exists

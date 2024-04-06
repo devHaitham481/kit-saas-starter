@@ -2,6 +2,7 @@
   import { route } from "$lib/ROUTES";
   import { socials, sections } from "$configs/landing/footer-links";
   import { APP_NAME } from "$configs/general";
+  import * as m from "$paraglide/messages";
 
   let currentYear = $state("");
 
@@ -36,7 +37,7 @@
   <hr class="my-6 border-gray-200 dark:border-gray-700 lg:my-8" />
   <div class="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
     <span class="text-sm text-gray-600 dark:text-gray-400">
-      © {currentYear} <a href={route("/")} class="hover:underline">KSS</a>™. All Rights Reserved.
+      © {currentYear} <a href={route("/")} class="hover:underline">KSS</a>™. {m.landing_footer_rights()}
     </span>
     <div class="flex gap-6">
       {#each socials as { href, component }}

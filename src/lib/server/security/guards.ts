@@ -2,6 +2,7 @@ import { FLASH_MESSAGE_STATUS } from "$configs/general";
 import { route } from "$lib/ROUTES";
 import { error, type Cookies } from "@sveltejs/kit";
 import { redirect } from "sveltekit-flash-message/server";
+import * as m from "$paraglide/message";
 
 /**
  * Checks if the user is anonymous.
@@ -26,7 +27,7 @@ export function isAnonymous(locals: App.Locals) {
 export function isUserAuthenticated(locals: App.Locals, cookies: Cookies, url: URL) {
   if (!locals.user && !locals.session) {
     const redirectTo = url.pathname;
-    const flashMessage = { status: FLASH_MESSAGE_STATUS.SUCCESS, text: "Please login first" };
+    const flashMessage = { status: FLASH_MESSAGE_STATUS.SUCCESS, text: m.flash_login() };
 
     redirect(route("/auth/login", { redirectTo }), flashMessage, cookies);
   }
@@ -45,7 +46,7 @@ export function isUserNotVerified(locals: App.Locals, cookies: Cookies, url: URL
   isUserAuthenticated(locals, cookies, url);
 
   if (locals.user?.isVerified) {
-    const flashMessage = { status: FLASH_MESSAGE_STATUS.SUCCESS, text: "Your account is already verified" };
+    const flashMessage = { status: FLASH_MESSAGE_STATUS.SUCCESS, text: m.flash_alreadyVerified() };
 
     redirect(route("/app/dashboard"), flashMessage, cookies);
   }

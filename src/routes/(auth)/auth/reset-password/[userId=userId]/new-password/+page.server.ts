@@ -11,6 +11,7 @@ import { isAnonymous, validateTurnstileToken, verifyRateLimiter } from "$lib/ser
 import { resetPasswordLimiter } from "$configs/rate-limiters/auth";
 import { FLASH_MESSAGE_STATUS } from "$configs/general";
 import { fail } from "@sveltejs/kit";
+import * as m from "$paraglide/messages";
 
 export const load = (async ({ locals }) => {
   isAnonymous(locals);
@@ -27,9 +28,9 @@ export const actions: Actions = {
 
     isAnonymous(locals);
 
-    const retryAfter = await verifyRateLimiter(event, resetPasswordLimiter);
-    if (retryAfter) {
-      flashMessage.text = `Too many requests, retry in ${retryAfter} minutes`;
+    const minutes = await verifyRateLimiter(event, resetPasswordLimiter);
+    if (minutes) {
+      flashMessage.text = m.core_form_shared_tooManyRequest({ minutes });
       logger.debug(flashMessage.text);
 
       setFlash(flashMessage, cookies);
@@ -44,7 +45,7 @@ export const actions: Actions = {
     form.data.passwordConfirm = "";
 
     if (!form.valid) {
-      flashMessage.text = "Invalid form";
+      flashMessage.text = m.core_form_shared_invalidForm();
       logger.debug(flashMessage.text);
 
       return message(form, flashMessage);
@@ -53,7 +54,7 @@ export const actions: Actions = {
     const ip = getClientAddress();
     const validatedTurnstileToken = await validateTurnstileToken(turnstileToken, ip);
     if (!validatedTurnstileToken.success) {
-      flashMessage.text = "Invalid turnstile";
+      flashMessage.text = m.core_form_shared_invalidTurnstile();
       logger.debug(validatedTurnstileToken.error, flashMessage.text);
 
       return message(form, flashMessage, { status: 400 });
@@ -66,14 +67,14 @@ export const actions: Actions = {
     const hashedPassword = await hashPassword(password);
     const updatedUser = await updateUserById(locals.db, userId, { password: hashedPassword });
     if (!updatedUser) {
-      flashMessage.text = "Failed to update user";
+      flashMessage.text = m.core_form_shared_failedToUpdateUser();
       logger.debug(flashMessage.text);
 
       return message(form, flashMessage, { status: 500 });
     }
 
     flashMessage.status = FLASH_MESSAGE_STATUS.SUCCESS;
-    flashMessage.text = "Password changed successfully. You can now login.";
+    flashMessage.text = m.auth_resetPassword_resetPasswordSuccessfully();
 
     redirect(route("/auth/login"), flashMessage, cookies);
   }

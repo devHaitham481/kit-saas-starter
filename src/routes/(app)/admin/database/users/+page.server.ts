@@ -5,6 +5,7 @@ import { setFlash } from "sveltekit-flash-message/server";
 import { FLASH_MESSAGE_STATUS } from "$configs/general";
 import { logger } from "$lib/logger";
 import { deleteUserFormSchema, type DeleteUserFormSchema } from "$validations/admin/database/users.schema";
+import * as m from "$paraglide/messages";
 
 export const load = (async ({ locals }) => {
   const users = await getAllUsers(locals.db);
@@ -21,9 +22,9 @@ export const actions: Actions = {
     try {
       form = deleteUserFormSchema.parse(data);
     } catch (error) {
-      logger.debug("Invalid form");
       flashMessage.status = FLASH_MESSAGE_STATUS.ERROR;
-      flashMessage.text = "Invalid form!";
+      flashMessage.text = m.core_form_shared_invalidForm();
+      logger.error(flashMessage.text);
       setFlash(flashMessage, cookies);
       return;
     }

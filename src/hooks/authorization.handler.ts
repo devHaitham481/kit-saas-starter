@@ -3,6 +3,7 @@ import { route } from "$lib/ROUTES";
 import { logger } from "$lib/logger";
 import { error, type Handle } from "@sveltejs/kit";
 import { redirect } from "sveltekit-flash-message/server";
+import * as m from "../lib/paraglide/messages";
 
 export const authorization: Handle = async ({ event, resolve }) => {
   const {
@@ -25,7 +26,7 @@ export const authorization: Handle = async ({ event, resolve }) => {
   if (isProtectedRoute && isAuthenticated && !isVerified) {
     logger.debug(`Redirect to ${route("/auth/verify-email")} route because user is not verified`);
 
-    flashMessage.text = "Please verify your email first";
+    flashMessage.text = m.flash_verifyEmail();
 
     redirect(route("/auth/verify-email"), flashMessage, event.cookies);
   }
@@ -34,6 +35,7 @@ export const authorization: Handle = async ({ event, resolve }) => {
   if (isAdminRoute && isAuthenticated && !isAdmin) {
     logger.debug(`Throwing 404 because someone is trying to access admin section and it is not admin`);
 
+    // TODO should I change this?
     error(404);
   }
 
@@ -41,7 +43,7 @@ export const authorization: Handle = async ({ event, resolve }) => {
   if (isUserRoute && !isAuthenticated) {
     const redirectTo = event.url.pathname;
 
-    flashMessage.text = "Please login first";
+    flashMessage.text = m.flash_login();
 
     logger.debug(`Redirect to ${route("/auth/login", { redirectTo })} route because user is not authenticated`);
 

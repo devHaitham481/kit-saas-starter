@@ -1,11 +1,12 @@
 import { EMAIL_MAX_LEN, EMAIL_MIN_LEN } from "$configs/fields-length";
 import { z } from "zod";
+import * as m from "$paraglide/messages";
 
 const emailField = z
-  .string({ required_error: "Email is required" })
+  .string({ required_error: m.validation_email_isRequired() })
   .trim()
-  .email({ message: "Email must be a valid email address" })
-  .min(EMAIL_MIN_LEN, { message: `Email must be at least ${EMAIL_MIN_LEN} characters` })
-  .max(EMAIL_MAX_LEN, { message: `Email must not exceed ${EMAIL_MAX_LEN} characters` });
+  .email({ message: m.validation_email_isValid() })
+  .min(EMAIL_MIN_LEN, { message: m.validation_email_minLength({ min: EMAIL_MIN_LEN }) })
+  .max(EMAIL_MAX_LEN, { message: m.validation_email_maxLength({ max: EMAIL_MAX_LEN }) });
 
 export { emailField };

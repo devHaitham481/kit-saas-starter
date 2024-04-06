@@ -8,6 +8,7 @@ const resources = [
   { name: "Lucia", href: route("lucia") }
 ];
 
+// TODO should I translate these?
 const legals = [
   { name: "Privacy Policy", href: route("/legal/privacy-policy") },
   { name: "Terms & Conditions", href: route("/legal/terms-and-conditions") },

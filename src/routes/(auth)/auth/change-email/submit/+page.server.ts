@@ -14,6 +14,7 @@ import { changeEmailLimiter } from "$configs/rate-limiters/auth";
 import type { User } from "lucia";
 import { FLASH_MESSAGE_STATUS } from "$configs/general";
 import { getUserByEmail } from "$lib/server/db/users";
+import * as m from "$paraglide/messages";
 
 export const load = (async ({ locals, cookies, url }) => {
   isUserAuthenticated(locals, cookies, url);
@@ -30,9 +31,9 @@ export const actions: Actions = {
 
     isUserAuthenticated(locals, cookies, url);
 
-    const retryAfter = await verifyRateLimiter(event, changeEmailLimiter);
-    if (retryAfter) {
-      flashMessage.text = `Too many requests, retry in ${retryAfter} minutes`;
+    const minutes = await verifyRateLimiter(event, changeEmailLimiter);
+    if (minutes) {
+      flashMessage.text = m.core_form_shared_tooManyRequest({ minutes });
       logger.debug(flashMessage.text);
 
       setFlash(flashMessage, cookies);
@@ -41,7 +42,7 @@ export const actions: Actions = {
 
     const form = await superValidate<ChangeEmailFormSchemaFirstStep, FlashMessage>(request, zod(changeEmailFormSchemaFirstStep));
     if (!form.valid) {
-      flashMessage.text = "Invalid form";
+      flashMessage.text = m.core_form_shared_invalidForm();
       logger.debug(flashMessage.text);
 
       return message(form, flashMessage);
@@ -55,7 +56,7 @@ export const actions: Actions = {
     const ip = getClientAddress();
     const validatedTurnstileToken = await validateTurnstileToken(turnstileToken, ip);
     if (!validatedTurnstileToken.success) {
-      flashMessage.text = "Invalid turnstile";
+      flashMessage.text = m.core_form_shared_invalidTurnstile();
       logger.debug(validatedTurnstileToken.error, flashMessage.text);
 
       return message(form, flashMessage, { status: 400 });
@@ -63,7 +64,7 @@ export const actions: Actions = {
 
     const existingUser = await getUserByEmail(locals.db, newEmail);
     if (existingUser) {
-      flashMessage.text = "Email already used";
+      flashMessage.text = m.auth_changeEmail_emailAlreadyUsed();
       logger.debug(flashMessage.text);
 
       return message(form, flashMessage, { status: 401 });
@@ -71,22 +72,22 @@ export const actions: Actions = {
 
     const newToken = await generateToken(locals.db, userId, newEmail, TOKEN_TYPE.EMAIL_CHANGE);
     if (!newToken) {
-      flashMessage.text = "Failed to generate token";
-      logger.debug(flashMessage.text);
+      flashMessage.text = m.core_form_shared_failedToGenerateToken();
+      logger.error(flashMessage.text);
 
       return message(form, flashMessage, { status: 500 });
     }
 
     const mailSent = await sendEmailChangeEmail(newEmail, name, newToken.token);
     if (!mailSent) {
-      flashMessage.text = "Failed to send email";
+      flashMessage.text = m.core_form_shared_failedToSendEmail();
       logger.debug(flashMessage.text);
 
       return message(form, flashMessage, { status: 500 });
     }
 
     flashMessage.status = FLASH_MESSAGE_STATUS.SUCCESS;
-    flashMessage.text = "Email sent successfully";
+    flashMessage.text = m.core_form_shared_emailSentSuccessfully();
 
     redirect(route("/auth/change-email/confirm"), flashMessage, cookies);
   }

@@ -1,10 +1,11 @@
 import { USER_ID_LEN } from "$configs/fields-length";
 import { z } from "zod";
+import * as m from "$paraglide/messages";
 
 // TODO add regex to check lowercase and numbers
 const userIdField = z
-  .string({ required_error: "UserId is required" })
+  .string({ required_error: matchMedia.validation_userId_isRequired() })
   .trim()
-  .length(USER_ID_LEN, { message: `User id must be ${USER_ID_LEN} characters` });
+  .length(USER_ID_LEN, { message: m.validation_userId_length({ len: USER_ID_LEN }) });
 
 export { userIdField };

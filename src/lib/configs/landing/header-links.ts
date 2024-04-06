@@ -1,5 +1,6 @@
 import { route } from "$lib/ROUTES";
 
+// TODO should I translate these?
 export const navLinks = [
   {
     name: "Features",

@@ -10,6 +10,7 @@ import { route } from "$lib/ROUTES";
 import { updateUserById } from "$lib/server/db/users";
 import { settingsNotificationsFormSchema, type SettingsNotificationsFormSchema } from "$validations/app/settings";
 import { notificationsSettingsLimiter } from "$configs/rate-limiters/app";
+import * as m from "$paraglide/messages";
 
 export const load: PageServerLoad = async ({ locals: { user } }) => {
   const { name } = user!;
@@ -23,9 +24,9 @@ export const actions: Actions = {
     const { request, locals, cookies } = event;
     const flashMessage = { status: FLASH_MESSAGE_STATUS.ERROR, text: "" };
 
-    const retryAfter = await verifyRateLimiter(event, notificationsSettingsLimiter);
-    if (retryAfter) {
-      flashMessage.text = `Too many requests, retry in ${retryAfter} minutes`;
+    const minutes = await verifyRateLimiter(event, notificationsSettingsLimiter);
+    if (minutes) {
+      flashMessage.text = m.core_form_shared_tooManyRequest({ minutes });
       logger.debug(flashMessage.text);
 
       setFlash(flashMessage, cookies);
@@ -34,7 +35,7 @@ export const actions: Actions = {
 
     const form = await superValidate<SettingsNotificationsFormSchema, FlashMessage>(request, zod(settingsNotificationsFormSchema));
     if (!form.valid) {
-      flashMessage.text = "Invalid form";
+      flashMessage.text = m.core_form_shared_invalidForm();
       logger.debug(flashMessage.text);
 
       return message(form, flashMessage);
@@ -46,7 +47,7 @@ export const actions: Actions = {
 
     const updatedUser = await updateUserById(locals.db, userId, { name });
     if (!updatedUser) {
-      flashMessage.text = "User not found";
+      flashMessage.text = m.core_form_shared_userNotFound();
       logger.debug(flashMessage.text);
 
       return message(form, flashMessage, { status: 400 });

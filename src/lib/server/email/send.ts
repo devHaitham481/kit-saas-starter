@@ -5,6 +5,9 @@ import WelcomeHtml from "./templates/welcome.html?raw";
 import { sendEmail } from ".";
 import { APP_NAME, APP_URL } from "$configs/general";
 import { route } from "$lib/ROUTES";
+import * as m from "$paraglide/messages";
+
+// TODO we need to translate email bodies sent to users
 
 /**
  * Sends a verification email to the specified email address.
@@ -19,7 +22,7 @@ export async function sendEmailVerificationEmail(email: string, name: string, to
 
   const body = EmailVerificationHtml.replaceAll("{{appName}}", APP_NAME).replace("{{user}}", name).replace("{{token}}", token);
 
-  return await sendEmail(email, `Verify your ${APP_NAME} email`, body);
+  return await sendEmail(email, m.email_emailVerification_title({ appName: APP_NAME }), body);
 }
 
 export async function sendWelcomeEmail(email: string, name: string): Promise<boolean> {
@@ -29,7 +32,7 @@ export async function sendWelcomeEmail(email: string, name: string): Promise<boo
     .replace("{{user}}", name)
     .replace("{{url}}", APP_URL + route("/app/dashboard"));
 
-  return await sendEmail(email, `Welcome to ${APP_NAME}`, body);
+  return await sendEmail(email, m.email_welcome_title({ appName: APP_NAME }), body);
 }
 
 // TODO insert welcome user in this email
@@ -38,7 +41,7 @@ export async function sendPasswordResetEmail(email: string, token: string): Prom
 
   const body = PasswordResetHtml.replaceAll("{{appName}}", APP_NAME).replace("{{token}}", token);
 
-  return await sendEmail(email, `Reset your password for ${APP_NAME}`, body);
+  return await sendEmail(email, m.email_passwordReset_title({ appName: APP_NAME }), body);
 }
 
 export async function sendEmailChangeEmail(email: string, name: string, token: string): Promise<boolean> {
@@ -46,5 +49,5 @@ export async function sendEmailChangeEmail(email: string, name: string, token: s
 
   const body = EmailChangeHtml.replaceAll("{{appName}}", APP_NAME).replace("{{user}}", name).replace("{{token}}", token);
 
-  return await sendEmail(email, `Confirm your ${APP_NAME} new email address`, body);
+  return await sendEmail(email, m.email_emailChange_title({ appName: APP_NAME }), body);
 }

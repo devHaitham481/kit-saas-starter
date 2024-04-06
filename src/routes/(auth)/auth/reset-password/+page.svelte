@@ -8,6 +8,7 @@
   import { resetPasswordFormSchemaFirstStep } from "$validations/auth";
   import Turnstile from "$components/layout/Turnstile.svelte";
   import { Loader2 } from "lucide-svelte";
+  import * as m from "$paraglide/messages";
 
   let { data } = $props();
 
@@ -27,28 +28,24 @@
 </script>
 
 <Card.Header class="space-y-1">
-  <Card.Title class="text-2xl">Reset your password</Card.Title>
+  <Card.Title class="text-2xl">{m.auth_resetPassword_title()}</Card.Title>
 </Card.Header>
 <Card.Content class="grid gap-4">
-  <div class="text-muted-foreground">Please insert your email to receive a token to reset your password.</div>
+  <div class="text-muted-foreground">{m.auth_resetPassword_step1_description()}</div>
   <form class="flex flex-col" method="post" use:enhance>
     <Form.Field {form} name="email" class="space-y-1">
       <Form.Control let:attrs>
-        <Form.Label>Email</Form.Label>
+        <Form.Label>{m.core_form_shared_label_email()}</Form.Label>
         <Input {...attrs} type="text" bind:value={$formData.email} />
       </Form.Control>
-      <Form.FieldErrors let:errors class="h-4 text-xs">
-        {#if errors[0]}
-          {errors[0]}
-        {/if}
-      </Form.FieldErrors>
+      <Form.FieldErrors class="h-4 text-xs" />
     </Form.Field>
     <Turnstile action={"reset-password-submit"} bind:resetTurnstile />
     <Form.Button type="submit" disabled={$delayed}>
       {#if $delayed}
-        <Loader2 class="mr-2 h-4 w-4 animate-spin" /> Loading...
+        <Loader2 class="mr-2 h-4 w-4 animate-spin" /> {m.core_form_shared_label_loading()}
       {:else}
-        Send
+        {m.core_form_shared_label_verify()}
       {/if}
     </Form.Button>
   </form>

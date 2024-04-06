@@ -10,6 +10,7 @@
   import Turnstile from "$components/layout/Turnstile.svelte";
   import { Loader2 } from "lucide-svelte";
   import { enhance } from "$app/forms";
+  import * as m from "$paraglide/messages";
 
   let { data } = $props();
 
@@ -29,10 +30,10 @@
 </script>
 
 <Card.Header class="space-y-1">
-  <Card.Title class="text-2xl">Reset your password</Card.Title>
+  <Card.Title class="text-2xl">{m.auth_resetPassword_title()}</Card.Title>
 </Card.Header>
 <Card.Content class="grid gap-4">
-  <div class="text-muted-foreground">Please check your email account for a message to reset your password.</div>
+  <div class="text-muted-foreground">{m.auth_resetPassword_step2_description()}</div>
   <form
     class="flex flex-col"
     method="post"
@@ -41,34 +42,29 @@
   >
     <Form.Field {form} name="token" class="space-y-1">
       <Form.Control let:attrs>
-        <Form.Label>Token</Form.Label>
+        <Form.Label>{m.core_form_shared_label_token()}</Form.Label>
         <Input {...attrs} type="text" bind:value={$formData.token} />
       </Form.Control>
-      <Form.FieldErrors let:errors class="h-4 text-xs">
-        {#if errors[0]}
-          {errors[0]}
-        {/if}
-      </Form.FieldErrors>
+      <Form.FieldErrors class="h-4 text-xs" />
     </Form.Field>
     <Turnstile action={"reset-password-confirm"} bind:resetTurnstile />
     <Form.Button type="submit" disabled={$delayed}>
       {#if $delayed}
-        <Loader2 class="mr-2 h-4 w-4 animate-spin" /> Loading...
+        <Loader2 class="mr-2 h-4 w-4 animate-spin" /> {m.core_form_shared_label_loading()}
       {:else}
-        Confirm
+        {m.core_form_shared_label_verify()}
       {/if}
     </Form.Button>
   </form>
 </Card.Content>
 <Card.Footer>
-  If you did not receive the email,
+  {m.core_form_shared_emailNotReceived()}
   <form
     class="mx-1 flex flex-col"
     method="post"
     action={route("resendEmail /auth/reset-password/[userId=userId]", { userId: data.userId })}
     use:enhance
   >
-    <button type="submit" class="underline">click here</button>
+    <button type="submit" class="underline">{m.core_form_shared_label_resendEmail()}</button>
   </form>
-  to resend it.
 </Card.Footer>

@@ -17,6 +17,7 @@ import { isAnonymous, validateTurnstileToken, verifyRateLimiter } from "$lib/ser
 import { registerLimiter } from "$configs/rate-limiters/auth";
 import { FLASH_MESSAGE_STATUS } from "$configs/general";
 import { fail } from "@sveltejs/kit";
+import * as m from "$paraglide/messages";
 
 export const load: PageServerLoad = async ({ locals }) => {
   isAnonymous(locals);
@@ -33,9 +34,9 @@ export const actions: Actions = {
 
     isAnonymous(locals);
 
-    const retryAfter = await verifyRateLimiter(event, registerLimiter);
-    if (retryAfter) {
-      flashMessage.text = `Too many requests, retry in ${retryAfter} minutes`;
+    const minutes = await verifyRateLimiter(event, registerLimiter);
+    if (minutes) {
+      flashMessage.text = m.core_form_shared_tooManyRequest({ minutes });
       logger.debug(flashMessage.text);
 
       setFlash(flashMessage, cookies);
@@ -50,7 +51,7 @@ export const actions: Actions = {
     form.data.passwordConfirm = "";
 
     if (!form.valid) {
-      flashMessage.text = "Invalid form";
+      flashMessage.text = m.core_form_shared_invalidForm();
       logger.debug(flashMessage.text);
 
       return message(form, flashMessage);
@@ -59,7 +60,7 @@ export const actions: Actions = {
     const ip = getClientAddress();
     const validatedTurnstileToken = await validateTurnstileToken(turnstileToken, ip);
     if (!validatedTurnstileToken.success) {
-      flashMessage.text = "Invalid turnstile";
+      flashMessage.text = m.core_form_shared_invalidTurnstile();
       logger.debug(validatedTurnstileToken.error, flashMessage.text);
 
       return message(form, flashMessage, { status: 400 });
@@ -67,7 +68,7 @@ export const actions: Actions = {
 
     const existingUser = await getUserByEmail(locals.db, email);
     if (existingUser && existingUser.authMethods.includes(AUTH_METHODS.EMAIL)) {
-      flashMessage.text = "This email is already in user. Please do login.";
+      flashMessage.text = m.auth_register_emailAlreadyUsed();
       logger.debug(flashMessage.text);
 
       return message(form, flashMessage, { status: 400 });
@@ -89,7 +90,7 @@ export const actions: Actions = {
       });
 
       if (!newUser) {
-        flashMessage.text = "Failed to insert new user: email already used";
+        flashMessage.text = m.auth_register_failed();
         logger.debug(flashMessage.text);
 
         return message(form, flashMessage, { status: 400 });
@@ -98,7 +99,7 @@ export const actions: Actions = {
       const updatedUser = await updateUserById(locals.db, existingUser.id, { password: hashedPassword, isVerified: false });
 
       if (!updatedUser) {
-        flashMessage.text = "Failed to insert new user: email already used";
+        flashMessage.text = m.auth_register_failed();
         logger.debug(flashMessage.text);
 
         return message(form, flashMessage, { status: 400 });
@@ -107,15 +108,15 @@ export const actions: Actions = {
 
     const newToken = await generateToken(locals.db, userId, email, TOKEN_TYPE.EMAIL_VERIFICATION);
     if (!newToken) {
-      flashMessage.text = "Failed to generate email verification token";
-      logger.debug(flashMessage.text);
+      flashMessage.text = m.core_form_shared_failedToGenerateToken();
+      logger.error(flashMessage.text);
 
       return message(form, flashMessage, { status: 500 });
     }
 
     const res = await sendEmailVerificationEmail(email, name, newToken.token);
     if (!res) {
-      flashMessage.text = "Failed to send email";
+      flashMessage.text = m.core_form_shared_failedToSendEmail();
       logger.debug(flashMessage.text);
 
       return message(form, flashMessage, { status: 500 });
@@ -124,7 +125,7 @@ export const actions: Actions = {
     await createAndSetSession(locals.lucia, userId, cookies);
 
     flashMessage.status = FLASH_MESSAGE_STATUS.SUCCESS;
-    flashMessage.text = "Account created. Please check your email to verify your account.";
+    flashMessage.text = m.auth_register_accountCreatedSuccessfully();
 
     redirect(route("/auth/verify-email"), flashMessage, cookies);
   }

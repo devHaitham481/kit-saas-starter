@@ -12,6 +12,7 @@
   import Button from "$components/ui/button/button.svelte";
   import Turnstile from "$components/layout/Turnstile.svelte";
   import { Loader2 } from "lucide-svelte";
+  import * as m from "$paraglide/messages";
 
   let { data } = $props();
 
@@ -36,19 +37,19 @@
   // ! this code is duplicated from register route
   // TODO export
   const customOptions: [FirstOption<string>, ...Option<string>[]] = [
-    { id: 0, value: "Too weak", minDiversity: 0, minLength: 0 },
-    { id: 1, value: "Weak", minDiversity: 2, minLength: 6 },
-    { id: 2, value: "Medium", minDiversity: 3, minLength: 8 },
-    { id: 3, value: "Strong", minDiversity: 4, minLength: 10 }
+    { id: 0, value: m.validation_password_strength_tooWeak(), minDiversity: 0, minLength: 0 },
+    { id: 1, value: m.validation_password_strength_weak(), minDiversity: 2, minLength: 6 },
+    { id: 2, value: m.validation_password_strength_medium(), minDiversity: 3, minLength: 8 },
+    { id: 3, value: m.validation_password_strength_strong(), minDiversity: 4, minLength: 10 }
   ];
 
   let pwd: Result<string> = $state(passwordStrength($formData.password, customOptions));
   let myData: Array<{ name: string; isDone: boolean }> = $derived([
-    { name: "Minimum number of characters is 10.", isDone: pwd.length >= 10 },
-    { name: "Should contain lowercase.", isDone: pwd.contains.includes("lowercase") },
-    { name: "Should contain uppercase.", isDone: pwd.contains.includes("uppercase") },
-    { name: "Should contain numbers.", isDone: pwd.contains.includes("number") },
-    { name: "Should contain special characters.", isDone: pwd.contains.includes("symbol") }
+    { name: m.validation_password_options_longerThan({ characters: 10 }), isDone: pwd.length >= 10 },
+    { name: m.validation_password_options_containsLowercases(), isDone: pwd.contains.includes("lowercase") },
+    { name: m.validation_password_options_containsUppercases(), isDone: pwd.contains.includes("uppercase") },
+    { name: m.validation_password_options_containsNumbers(), isDone: pwd.contains.includes("number") },
+    { name: m.validation_password_options_containsSpecialCharacters(), isDone: pwd.contains.includes("symbol") }
   ]);
 
   $effect(() => {
@@ -57,13 +58,14 @@
 </script>
 
 <Card.Header class="space-y-1">
-  <Card.Title class="text-2xl">Change your password</Card.Title>
+  <Card.Title class="text-2xl">{m.auth_resetPassword_title()}</Card.Title>
 </Card.Header>
 <Card.Content class="grid gap-4">
+  <div class="text-muted-foreground">{m.auth_resetPassword_step3_description()}</div>
   <form class="flex flex-col gap-3" method="post" use:enhance>
     <Form.Field {form} name="password" class="relative space-y-1">
       <Form.Control let:attrs>
-        <Form.Label>Password</Form.Label>
+        <Form.Label>{m.core_form_shared_label_password()}</Form.Label>
         <Input
           {...attrs}
           type={passwordInputType}
@@ -90,7 +92,7 @@
     </Form.Field>
     <Form.Field {form} name="passwordConfirm" class="mt-2 space-y-1">
       <Form.Control let:attrs>
-        <Form.Label>Password Confirm</Form.Label>
+        <Form.Label>{m.core_form_shared_label_passwordConfirm()}</Form.Label>
         <Input {...attrs} type="password" bind:value={$formData.passwordConfirm} />
       </Form.Control>
       <Form.FieldErrors let:errors class="h-4 text-xs">
@@ -102,9 +104,9 @@
     <Turnstile action={"reset-password-change"} bind:resetTurnstile />
     <Form.Button type="submit" disabled={$delayed}>
       {#if $delayed}
-        <Loader2 class="mr-2 h-4 w-4 animate-spin" /> Loading...
+        <Loader2 class="mr-2 h-4 w-4 animate-spin" /> {m.core_form_shared_label_loading()}
       {:else}
-        Change password
+        {m.core_form_shared_label_verify()}
       {/if}
     </Form.Button>
   </form>

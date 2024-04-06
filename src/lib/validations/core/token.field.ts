@@ -1,10 +1,11 @@
 import { TOKEN_LEN } from "$configs/fields-length";
 import { z } from "zod";
+import * as m from "$paraglide/messages";
 
 // TODO add regex to check for lowercases, uppercases and numbers
 const tokenField = z
-  .string({ required_error: "Token is required" })
+  .string({ required_error: m.validation_token_isRequired() })
   .trim()
-  .length(TOKEN_LEN, { message: `Token must be ${TOKEN_LEN} characters` });
+  .length(TOKEN_LEN, { message: m.validation_token_length({ len: TOKEN_LEN }) });
 
 export { tokenField };
