@@ -6,7 +6,6 @@
   import { Check, Loader2, Pencil, Trash2, X } from "lucide-svelte";
   import * as Dialog from "$lib/components/ui/dialog";
   import { Input } from "$lib/components/ui/input";
-  import { Label } from "$lib/components/ui/label";
   import * as Form from "$lib/components/ui/form";
   import { superForm } from "sveltekit-superforms";
   import { zodClient } from "sveltekit-superforms/adapters";
@@ -88,7 +87,7 @@
                       {/if}
                     </Form.FieldErrors>
                   </Form.Field>
-                  <Form.Field {form} name="email" class="space-y-1">
+                  <!-- <Form.Field {form} name="email" class="space-y-1">
                     <Form.Control let:attrs>
                       <Form.Label>Email</Form.Label>
                       <Input {...attrs} type="email" bind:value={$formData.email} />
@@ -98,7 +97,7 @@
                         {errors[0]}
                       {/if}
                     </Form.FieldErrors>
-                  </Form.Field>
+                  </Form.Field> -->
                   <Form.Button type="submit" class="mt-4" disabled={$delayed}>
                     {#if $delayed}
                       <Loader2 class="mr-2 h-4 w-4 animate-spin" /> Loading...

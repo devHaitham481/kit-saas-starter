@@ -10,7 +10,7 @@
 </script>
 
 <div class="!mt-2 flex h-2 w-full flex-row items-stretch gap-1">
-  {#each { length: 4 } as _, i}
+  {#each Array(4).keys() as i}
     {#if pwd.id === 0}
       <span class:bg-red-600={pwd.length > 0 && i <= pwd.id} class="grow rounded border"></span>
     {:else if pwd.id === 1}

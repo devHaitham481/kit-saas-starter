@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { Button, buttonVariants } from "$components/ui/button";
-  import { route } from "$lib/ROUTES";
   import { Loader2 } from "lucide-svelte";
   import { Input } from "$lib/components/ui/input";
   import * as Form from "$lib/components/ui/form";

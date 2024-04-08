@@ -20,6 +20,14 @@ module.exports = {
       parser: "svelte-eslint-parser",
       parserOptions: {
         parser: "@typescript-eslint/parser"
+      },
+      rules: {
+        // TODO delete this line when the following PR will be merged
+        // https://github.com/sveltejs/eslint-plugin-svelte/issues/348
+        "@typescript-eslint/no-unused-vars": ["warn", { varsIgnorePattern: "^\\$\\$(Props|Events|Slots)$" }],
+        // TODO this should be deleted, it's a known bug
+        // https://github.com/sveltejs/eslint-plugin-svelte/issues/652
+        "svelte/valid-compile": "off"
       }
     }
   ]

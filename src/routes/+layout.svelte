@@ -6,6 +6,8 @@
   import { page } from "$app/stores";
   import { toast } from "svelte-sonner";
   import { setupViewTransition } from "sveltekit-view-transition";
+  import { ParaglideJS } from "@inlang/paraglide-js-adapter-sveltekit";
+  import { i18n } from "$lib/i18n";
 
   setupViewTransition();
 
@@ -34,7 +36,9 @@
   });
 </script>
 
-<ModeWatcher />
-<Toaster richColors closeButton position={"top-center"} />
+<ParaglideJS {i18n}>
+  <ModeWatcher />
+  <Toaster richColors closeButton position={"top-center"} />
 
-{@render children()}
+  {@render children()}
+</ParaglideJS>

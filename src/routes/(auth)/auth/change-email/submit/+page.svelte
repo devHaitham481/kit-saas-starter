@@ -1,7 +1,6 @@
 <script lang="ts">
   import * as Card from "$lib/components/ui/card";
   import * as Form from "$lib/components/ui/form";
-  import { APP_NAME } from "$configs/general";
   import Input from "$components/ui/input/input.svelte";
   import { superForm } from "sveltekit-superforms";
   import { zodClient } from "sveltekit-superforms/adapters";

@@ -1,7 +1,5 @@
 <script lang="ts">
-  import { Features, Footer, Header, Hero } from "$components/layout/landing-page";
-
-  let { data } = $props();
+  import { Features, Hero } from "$components/layout/landing-page";
 </script>
 
 <Hero />
