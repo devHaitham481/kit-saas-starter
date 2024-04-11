@@ -1,6 +1,5 @@
-// src/lib/i18n.js
 import { createI18n } from "@inlang/paraglide-js-adapter-sveltekit";
-import * as runtime from "$lib/paraglide/runtime.js";
+import * as runtime from "$paraglide/runtime";
 
 // TODO is this the correct way?
 export const i18n = createI18n(runtime, {
