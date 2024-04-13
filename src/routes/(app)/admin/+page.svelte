@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Button from "$components/ui/button/button.svelte";
+  import { Button } from "$components/ui/button";
   import { route } from "$lib/ROUTES";
   import * as Card from "$lib/components/ui/card";
   import { Settings, Database } from "lucide-svelte";

@@ -1,16 +1,16 @@
 <script lang="ts">
-  import * as Card from "$lib/components/ui/card";
-  import * as Form from "$lib/components/ui/form";
+  import * as Card from "$components/ui/card";
+  import * as Form from "$components/ui/form";
   import { superForm } from "sveltekit-superforms";
   import { zodClient } from "sveltekit-superforms/adapters";
   import * as flashModule from "sveltekit-flash-message/client";
   import { resetPasswordFormSchemaThirdStep } from "$validations/auth";
-  import Input from "$components/ui/input/input.svelte";
-  import PasswordStrength from "$components/layout/PasswordStrength.svelte";
+  import { Input } from "$components/ui/input";
+  import { PasswordStrength } from "$components/layout";
   import { passwordStrength, type FirstOption, type Result, type Option } from "check-password-strength";
   import { Eye, EyeOff } from "lucide-svelte";
-  import Button from "$components/ui/button/button.svelte";
-  import Turnstile from "$components/layout/Turnstile.svelte";
+  import { Button } from "$components/ui/button";
+  import { Turnstile } from "$components/layout";
   import { Loader2 } from "lucide-svelte";
   import * as m from "$paraglide/messages";
 

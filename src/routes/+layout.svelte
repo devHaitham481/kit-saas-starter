@@ -8,6 +8,8 @@
   import { setupViewTransition } from "sveltekit-view-transition";
   import { ParaglideJS } from "@inlang/paraglide-js-adapter-sveltekit";
   import { i18n } from "$lib/i18n";
+  import { navigationDelayed } from "$stores/navigation-delayed.store";
+  import { Loader } from "$components/layout";
 
   setupViewTransition();
 
@@ -36,9 +38,13 @@
   });
 </script>
 
-<ParaglideJS {i18n}>
-  <ModeWatcher />
-  <Toaster richColors closeButton position={"top-center"} />
+{#if $navigationDelayed}
+  <Loader />
+{:else}
+  <ParaglideJS {i18n}>
+    <ModeWatcher />
+    <Toaster richColors closeButton position={"top-center"} />
 
-  {@render children()}
-</ParaglideJS>
+    {@render children()}
+  </ParaglideJS>
+{/if}

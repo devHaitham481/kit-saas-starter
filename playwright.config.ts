@@ -6,7 +6,8 @@ const config: PlaywrightTestConfig = {
     port: 8788
   },
   testDir: "tests",
-  testMatch: /(.+\.)?(test|spec)\.[jt]s/
+  testMatch: /(.+\.)?(test|spec)\.[jt]s/,
+  reporter: "html"
 };
 
 export default config;

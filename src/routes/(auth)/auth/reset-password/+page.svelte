@@ -1,12 +1,12 @@
 <script lang="ts">
   import * as Card from "$lib/components/ui/card";
   import * as Form from "$lib/components/ui/form";
-  import Input from "$components/ui/input/input.svelte";
+  import { Input } from "$components/ui/input";
   import { superForm } from "sveltekit-superforms";
   import { zodClient } from "sveltekit-superforms/adapters";
   import * as flashModule from "sveltekit-flash-message/client";
   import { resetPasswordFormSchemaFirstStep } from "$validations/auth";
-  import Turnstile from "$components/layout/Turnstile.svelte";
+  import { Turnstile } from "$components/layout";
   import { Loader2 } from "lucide-svelte";
   import * as m from "$paraglide/messages";
 

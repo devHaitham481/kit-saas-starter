@@ -8,7 +8,7 @@
   import type { User } from "lucia";
   import { enhance } from "$app/forms";
   import { route } from "$lib/ROUTES";
-  import LanguageSwitcher from "$components/layout/LanguageSwitcher.svelte";
+  import LanguageSwitcher from "$components/layout/language-switcher.svelte";
   import * as m from "$paraglide/messages";
 
   type Props = { user: User | null };

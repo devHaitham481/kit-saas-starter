@@ -2,7 +2,7 @@
   import { page } from "$app/stores";
   import { route } from "$lib/ROUTES";
 
-  import Button from "$components/ui/button/button.svelte";
+  import { Button } from "$components/ui/button";
 </script>
 
 <div class="grid place-items-center gap-5 text-center">

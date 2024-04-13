@@ -1,15 +1,15 @@
 <script lang="ts">
   import { superForm } from "sveltekit-superforms";
-  import * as Form from "$lib/components/ui/form";
-  import { Input } from "$lib/components/ui/input";
-  import * as Card from "$lib/components/ui/card";
+  import * as Form from "$components/ui/form";
+  import { Input } from "$components/ui/input";
+  import * as Card from "$components/ui/card";
   import { zodClient } from "sveltekit-superforms/adapters";
   import { loginFormSchema } from "$validations/auth";
-  import Button from "$components/ui/button/button.svelte";
+  import { Button } from "$components/ui/button";
   import { GitHub, Google } from "$components/icons";
   import { route } from "$lib/ROUTES.js";
   import * as flashModule from "sveltekit-flash-message/client";
-  import Turnstile from "$components/layout/Turnstile.svelte";
+  import { Turnstile } from "$components/layout";
   import { Loader2 } from "lucide-svelte";
   import * as m from "$paraglide/messages";
 
