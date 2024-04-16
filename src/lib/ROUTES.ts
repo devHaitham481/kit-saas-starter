@@ -60,6 +60,7 @@ const ACTIONS = {
   "updateUser /admin/database/tokens": `/admin/database/tokens?/updateUser`,
   "deleteUser /admin/database/tokens": `/admin/database/tokens?/deleteUser`,
   "deleteUser /admin/database/users": `/admin/database/users?/deleteUser`,
+  "updateUser /admin/database/users": `/admin/database/users?/updateUser`,
   "default /app/settings/account": `/app/settings/account`,
   "default /app/settings/notifications": `/app/settings/notifications`,
   "default /app/settings/profile": `/app/settings/profile`,
@@ -235,6 +236,7 @@ export type KIT_ROUTES = {
     "updateUser /admin/database/tokens": never;
     "deleteUser /admin/database/tokens": never;
     "deleteUser /admin/database/users": never;
+    "updateUser /admin/database/users": never;
     "default /app/settings/account": never;
     "default /app/settings/notifications": never;
     "default /app/settings/profile": never;

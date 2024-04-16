@@ -1,11 +1,15 @@
 <script lang="ts">
-  import { enhance } from "$app/forms";
   import { Button, buttonVariants } from "$components/ui/button";
   import { route } from "$lib/ROUTES";
-  import * as Table from "$lib/components/ui/table";
+  import * as Table from "$components/ui/table";
   import { Check, Pencil, Trash2, X } from "lucide-svelte";
-  import { Input } from "$lib/components/ui/input";
-  import * as AlertDialog from "$lib/components/ui/alert-dialog";
+  import { Input } from "$components/ui/input";
+  import * as AlertDialog from "$components/ui/alert-dialog";
+  import * as Dialog from "$components/ui/dialog";
+  import * as Form from "$components/ui/form";
+  import { enhance } from "$app/forms";
+  import { Label } from "$lib/components/ui/label/index.js";
+  import { Switch } from "$lib/components/ui/switch/index.js";
 
   const { data } = $props();
 </script>
@@ -54,9 +58,32 @@
         <Table.Cell>{user.createdAt.toLocaleString()}</Table.Cell>
         <Table.Cell>{user.modifiedAt?.toLocaleString()}</Table.Cell>
         <Table.Cell class="w-8 px-2">
-          <Button class="size-10 p-0" href={route("/admin/database/users/[userId=userId]", { userId: user.id })}>
-            <Pencil class="size-5" />
-          </Button>
+          <Dialog.Root>
+            <Dialog.Trigger class={buttonVariants({ variant: "default" }) + " size-10 !p-0"}>
+              <Pencil class="size-5" />
+            </Dialog.Trigger>
+            <Dialog.Content>
+              <Dialog.Header>
+                <Dialog.Title>Update profile</Dialog.Title>
+                <Dialog.Description>Make changes to user profile here. Click save when you're done.</Dialog.Description>
+              </Dialog.Header>
+              <form method="post" action={route("updateUser /admin/database/users")} use:enhance class="space-y-4">
+                <Input name="userId" value={user.id} type="hidden" />
+                <Input name="name" value={user.name} type="text" />
+                <Input name="email" value={user.email} type="email" />
+                <Input name="username" value={user.username} type="text" />
+                <div class="flex items-center space-x-2">
+                  <Switch name="isVerified" id="isVerified" />
+                  <Label for="isVerified">Is verified?</Label>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <Switch name="isAdmin" id="isAdmin" />
+                  <Label for="isAdmin">Is admin?</Label>
+                </div>
+                <Form.Button type="submit">Save changes</Form.Button>
+              </form>
+            </Dialog.Content>
+          </Dialog.Root>
         </Table.Cell>
         <Table.Cell class="w-8 px-1">
           <AlertDialog.Root>

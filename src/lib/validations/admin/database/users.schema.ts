@@ -6,6 +6,7 @@ export const deleteUserFormSchema = z.object({ userId: userIdField });
 export type DeleteUserFormSchema = Infer<typeof deleteUserFormSchema>;
 
 export const updateUserFormSchema = z.object({
+  userId: userIdField,
   email: emailField,
   name: nameField,
   username: usernameField,
