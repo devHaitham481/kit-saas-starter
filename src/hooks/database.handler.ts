@@ -1,10 +1,11 @@
 import type { Handle } from "@sveltejs/kit";
+import { db, schema } from "$lib/server/db";
 import { drizzle } from "drizzle-orm/d1";
 
-import * as schema from "$lib/server/db/schema";
-
 export const database: Handle = async ({ event, resolve }) => {
-  event.locals.db = drizzle(event.platform?.env.DB as D1Database, { schema });
+  db.client = drizzle(event.platform?.env.DB as D1Database, { schema });
+
+  event.locals.db = db.client;
 
   return resolve(event);
 };

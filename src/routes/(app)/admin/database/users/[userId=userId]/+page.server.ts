@@ -6,9 +6,10 @@ import { updateUserFormSchema, type UpdateUserFormSchema } from "$validations/ad
 import { zod } from "sveltekit-superforms/adapters";
 import * as m from "$paraglide/messages";
 
-export const load = (async ({ locals, params }) => {
+export const load = (async ({ params }) => {
   const { userId } = params;
-  const user = await getUserById(locals.db, userId);
+  const user = await getUserById(userId);
+
   if (!user) {
     error(404, m.core_form_shared_userNotFound());
   }

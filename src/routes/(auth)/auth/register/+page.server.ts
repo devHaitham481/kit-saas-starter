@@ -66,7 +66,7 @@ export const actions: Actions = {
       return message(form, flashMessage, { status: 400 });
     }
 
-    const existingUser = await getUserByEmail(locals.db, email);
+    const existingUser = await getUserByEmail(email);
     if (existingUser && existingUser.authMethods.includes(AUTH_METHODS.EMAIL)) {
       flashMessage.text = m.auth_register_emailAlreadyUsed();
       logger.debug(flashMessage.text);
@@ -78,7 +78,7 @@ export const actions: Actions = {
     const hashedPassword = await hashPassword(password);
 
     if (!existingUser) {
-      const newUser = await createUser(locals.db, {
+      const newUser = await createUser({
         id: userId,
         name,
         email,
@@ -96,7 +96,7 @@ export const actions: Actions = {
         return message(form, flashMessage, { status: 400 });
       }
     } else {
-      const updatedUser = await updateUserById(locals.db, existingUser.id, { password: hashedPassword, isVerified: false });
+      const updatedUser = await updateUserById(existingUser.id, { password: hashedPassword, isVerified: false });
 
       if (!updatedUser) {
         flashMessage.text = m.auth_register_failed();
@@ -106,7 +106,7 @@ export const actions: Actions = {
       }
     }
 
-    const newToken = await generateToken(locals.db, userId, email, TOKEN_TYPE.EMAIL_VERIFICATION);
+    const newToken = await generateToken(userId, email, TOKEN_TYPE.EMAIL_VERIFICATION);
     if (!newToken) {
       flashMessage.text = m.core_form_shared_failedToGenerateToken();
       logger.error(flashMessage.text);

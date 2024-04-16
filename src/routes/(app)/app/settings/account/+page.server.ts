@@ -41,10 +41,11 @@ export const actions: Actions = {
       return message(form, flashMessage);
     }
 
+    // TODO check this !
     const { name } = form.data;
     const { id: userId } = locals.user!;
 
-    const updatedUser = await updateUserById(locals.db, userId, { name });
+    const updatedUser = await updateUserById(userId, { name });
     if (!updatedUser) {
       flashMessage.text = m.core_form_shared_userNotFound();
       logger.debug(flashMessage.text);

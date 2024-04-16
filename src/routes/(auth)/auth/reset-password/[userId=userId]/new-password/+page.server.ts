@@ -65,7 +65,7 @@ export const actions: Actions = {
     await locals.lucia.invalidateUserSessions(userId);
 
     const hashedPassword = await hashPassword(password);
-    const updatedUser = await updateUserById(locals.db, userId, { password: hashedPassword });
+    const updatedUser = await updateUserById(userId, { password: hashedPassword });
     if (!updatedUser) {
       flashMessage.text = m.core_form_shared_failedToUpdateUser();
       logger.debug(flashMessage.text);

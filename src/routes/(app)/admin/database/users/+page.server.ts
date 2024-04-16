@@ -14,8 +14,8 @@ import * as m from "$paraglide/messages";
 import { zod } from "sveltekit-superforms/adapters";
 import { superValidate, message } from "sveltekit-superforms/server";
 
-export const load = (async ({ locals }) => {
-  const users = await getAllUsers(locals.db);
+export const load = (async () => {
+  const users = await getAllUsers();
 
   const updateForm = await superValidate<UpdateUserFormSchema, FlashMessage>(zod(updateUserFormSchema));
   const deleteForm = await superValidate<DeleteUserFormSchema, FlashMessage>(zod(deleteUserFormSchema));
@@ -24,7 +24,7 @@ export const load = (async ({ locals }) => {
 }) satisfies PageServerLoad;
 
 export const actions: Actions = {
-  deleteUser: async ({ request, cookies, locals: { db } }) => {
+  deleteUser: async ({ request, cookies }) => {
     const flashMessage = { status: FLASH_MESSAGE_STATUS.SUCCESS, text: "User successfully deleted!" };
 
     const form = await superValidate<DeleteUserFormSchema, FlashMessage>(request, zod(deleteUserFormSchema));
@@ -38,7 +38,7 @@ export const actions: Actions = {
 
     const { userId } = form.data;
 
-    const deletedUser = await deleteUserById(db, userId);
+    const deletedUser = await deleteUserById(userId);
     if (!deletedUser) {
       logger.debug("Something went wrong");
       flashMessage.status = FLASH_MESSAGE_STATUS.ERROR;
@@ -51,7 +51,7 @@ export const actions: Actions = {
     setFlash(flashMessage, cookies);
   },
 
-  updateUser: async ({ request, cookies, locals: { db } }) => {
+  updateUser: async ({ request, cookies }) => {
     const flashMessage = { status: FLASH_MESSAGE_STATUS.SUCCESS, text: "User successfully updated!" };
 
     const form = await superValidate<UpdateUserFormSchema, FlashMessage>(request, zod(updateUserFormSchema));
@@ -65,7 +65,7 @@ export const actions: Actions = {
 
     const { userId, name, email, username, isVerified, isAdmin } = form.data;
 
-    const updatedUser = await updateUserById(db, userId, { name, email, username, isVerified, isAdmin });
+    const updatedUser = await updateUserById(userId, { name, email, username, isVerified, isAdmin });
     if (!updatedUser) {
       logger.debug("Something went wrong");
       flashMessage.status = FLASH_MESSAGE_STATUS.ERROR;

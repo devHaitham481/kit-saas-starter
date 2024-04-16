@@ -58,7 +58,7 @@ export const actions: Actions = {
       return message(form, flashMessage, { status: 400 });
     }
 
-    const userFromDb = await getUserByEmail(locals.db, email);
+    const userFromDb = await getUserByEmail(email);
     if (!userFromDb) {
       flashMessage.status = FLASH_MESSAGE_STATUS.SUCCESS;
       flashMessage.text = m.core_form_shared_emailSentSuccessfully();
@@ -69,7 +69,7 @@ export const actions: Actions = {
 
     const { id: userId } = userFromDb;
 
-    const newToken = await generateToken(locals.db, userId, email, TOKEN_TYPE.PASSWORD_RESET);
+    const newToken = await generateToken(userId, email, TOKEN_TYPE.PASSWORD_RESET);
     if (!newToken) {
       flashMessage.text = m.core_form_shared_failedToGenerateToken();
       logger.error(flashMessage.text);

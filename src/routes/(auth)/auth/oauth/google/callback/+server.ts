@@ -57,11 +57,11 @@ export const GET: RequestHandler = async ({ cookies, url, locals: { db, lucia } 
     }
 
     // check if the user already exists
-    const existingUser = await getUserByEmail(db, googleUser.email);
+    const existingUser = await getUserByEmail(googleUser.email);
 
     if (existingUser) {
       // check if the user already has a Google OAuth account linked
-      const existingOauthAccount = await getOAuthAccountByProviderUserId(db, AUTH_METHODS.GOOGLE, googleUser.sub);
+      const existingOauthAccount = await getOAuthAccountByProviderUserId(AUTH_METHODS.GOOGLE, googleUser.sub);
 
       if (!existingOauthAccount) {
         // add the 'google' auth provider to the user's authMethods list

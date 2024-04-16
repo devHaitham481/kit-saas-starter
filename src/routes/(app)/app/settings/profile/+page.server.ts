@@ -44,7 +44,7 @@ export const actions: Actions = {
     const { username } = form.data;
     const { id: userId } = locals.user!;
 
-    const existingUser = await getUserByUsername(locals.db, username);
+    const existingUser = await getUserByUsername(username);
     if (existingUser && existingUser.id !== userId) {
       flashMessage.text = "Username already taken";
       logger.debug(flashMessage.text);
@@ -52,7 +52,7 @@ export const actions: Actions = {
       return message(form, flashMessage, { status: 400 });
     }
 
-    const updatedUser = await updateUserById(locals.db, userId, { username });
+    const updatedUser = await updateUserById(userId, { username });
     if (!updatedUser) {
       flashMessage.text = m.core_form_shared_userNotFound();
       logger.debug(flashMessage.text);

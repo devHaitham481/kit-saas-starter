@@ -60,7 +60,7 @@ export const actions: Actions = {
       return message(form, flashMessage, { status: 400 });
     }
 
-    const existingUser = await getUserByEmail(locals.db, email);
+    const existingUser = await getUserByEmail(email);
     if (!existingUser) {
       flashMessage.text = m.core_form_shared_invalidEmailOrPassword();
       logger.debug(flashMessage.text);

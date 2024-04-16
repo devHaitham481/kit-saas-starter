@@ -6,9 +6,9 @@ import { superValidate } from "sveltekit-superforms";
 import { updateUserFormSchema, type UpdateUserFormSchema } from "$validations/app/update-user.schema";
 import { zod } from "sveltekit-superforms/adapters";
 
-export const load = (async ({ locals }) => {
+export const load = (async () => {
   // TODO implement getAllTokens
-  const users = await getAllUsers(locals.db);
+  const users = await getAllUsers();
 
   const form = await superValidate<UpdateUserFormSchema, FlashMessage>(zod(updateUserFormSchema));
 
@@ -16,12 +16,12 @@ export const load = (async ({ locals }) => {
 }) satisfies PageServerLoad;
 
 export const actions: Actions = {
-  updateUser: async ({ request, cookies, locals: { db } }) => {
+  updateUser: async ({ request, cookies }) => {
     // TODO switch to zod
     const data = await request.formData();
     const userId = data.get("userId") as string;
 
-    const res = await deleteUserById(db, userId);
+    const res = await deleteUserById(userId);
     if (res) {
       setFlash({ status: "success", text: "Success!" }, cookies);
       return;
@@ -30,12 +30,12 @@ export const actions: Actions = {
     setFlash({ status: "error", text: "Error" }, cookies);
   },
 
-  deleteUser: async ({ request, cookies, locals: { db } }) => {
+  deleteUser: async ({ request, cookies }) => {
     // TODO switch to zod
     const data = await request.formData();
     const userId = data.get("userId") as string;
 
-    const res = await deleteUserById(db, userId);
+    const res = await deleteUserById(userId);
     if (res) {
       setFlash({ status: "success", text: "Success!" }, cookies);
       return;
