@@ -5,6 +5,7 @@ import wasm from "vite-plugin-wasm";
 import topLevelAwait from "vite-plugin-top-level-await";
 import type { KIT_ROUTES } from "$lib/ROUTES";
 import { paraglide } from "@inlang/paraglide-js-adapter-sveltekit/vite";
+import * as LINKS from "./src/lib/configs/links";
 
 export default defineConfig({
   plugins: [
@@ -18,20 +19,19 @@ export default defineConfig({
     kitRoutes<KIT_ROUTES>({
       post_update_run: "npm exec prettier ./src/lib/ROUTES.ts -- -w",
       LINKS: {
-        // TODO export this URLs into constant folder
         // socials
-        discord: "https://discord.com",
-        facebook: "https://facebook.com",
-        github: "https://github.com/yverek/kit-saas-starter",
-        instagram: "https://instagram.com",
-        tiktok: "https://tiktok.com",
-        twitter: "https://twitter.com",
+        discord: LINKS.DISCORD,
+        facebook: LINKS.FACEBOOK,
+        github: LINKS.GITHUB,
+        instagram: LINKS.INSTAGRAM,
+        tiktok: LINKS.TIKTOK,
+        twitter: LINKS.TWITTER,
 
         // tools
-        svelte: "https://svelte.dev",
-        tailwind: "https://tailwindcss.com",
-        drizzle: "https://orm.drizzle.team",
-        lucia: "https://lucia-auth.com"
+        svelte: LINKS.SVELTE,
+        tailwind: LINKS.TAILWIND,
+        drizzle: LINKS.DRIZZLE,
+        lucia: LINKS.LUCIA
       },
       PAGES: {
         "/auth/login": {
