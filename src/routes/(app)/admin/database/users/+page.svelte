@@ -10,6 +10,7 @@
   import { enhance } from "$app/forms";
   import { Label } from "$lib/components/ui/label/index.js";
   import { Switch } from "$lib/components/ui/switch/index.js";
+  import * as Avatar from "$lib/components/ui/avatar";
 
   const { data } = $props();
 </script>
@@ -18,21 +19,34 @@
   <Table.Caption>Add pagination to this table</Table.Caption>
   <Table.Header>
     <Table.Row>
-      <Table.Head class="w-[100px]">ID</Table.Head>
+      <Table.Head class="w-[40px]">Avatar</Table.Head>
+      <Table.Head class="w-[50px]">ID</Table.Head>
       <Table.Head>Name</Table.Head>
       <Table.Head>Username</Table.Head>
       <Table.Head>Email</Table.Head>
       <Table.Head class="w-[75px]">Verified</Table.Head>
       <Table.Head class="w-[75px]">Admin</Table.Head>
-      <Table.Head class="w-[150px]">Created At</Table.Head>
-      <Table.Head class="w-[150px]">Modified At</Table.Head>
+      <Table.Head class="w-[200px]">Created At</Table.Head>
+      <Table.Head class="w-[200px]">Modified At</Table.Head>
       <Table.Head class="w-8 px-0"></Table.Head>
       <Table.Head class="w-8 px-0"></Table.Head>
     </Table.Row>
   </Table.Header>
   <Table.Body>
     {#each data.users as user (user.id)}
+      {@const initials = user.name
+        .split(" ")
+        .map((w) => w[0].toUpperCase())
+        .join("")}
       <Table.Row>
+        <Table.Cell>
+          <Avatar.Root class="size-10">
+            <Avatar.Image src={user.avatarUrl} alt={`${user.name} avatar`} />
+            <Avatar.Fallback>
+              {initials}
+            </Avatar.Fallback>
+          </Avatar.Root>
+        </Table.Cell>
         <Table.Cell class="font-medium">
           <Button variant="link" href={route("/admin/database/users/[userId=userId]", { userId: user.id })}>
             {user.id}
