@@ -9,7 +9,8 @@ import type { Database } from "../types";
 export async function createUser(db: Database, newUser: DbInsertUser): Promise<DbUser | undefined> {
   newUser = {
     ...newUser,
-    email: newUser.email.toLowerCase()
+    email: newUser.email.toLowerCase(),
+    username: newUser.username.toLowerCase()
   };
 
   const res = await db.insert(users).values(newUser).onConflictDoNothing().returning();
