@@ -62,7 +62,7 @@ export const actions: Actions = {
       return message(form, flashMessage, { status: 400 });
     }
 
-    const existingUser = await getUserByEmail(newEmail);
+    const existingUser = await getUserByEmail(locals.db, newEmail);
     if (existingUser) {
       flashMessage.text = m.auth_changeEmail_emailAlreadyUsed();
       logger.debug(flashMessage.text);
@@ -70,7 +70,7 @@ export const actions: Actions = {
       return message(form, flashMessage, { status: 401 });
     }
 
-    const newToken = await generateToken(userId, newEmail, TOKEN_TYPE.EMAIL_CHANGE);
+    const newToken = await generateToken(locals.db, userId, newEmail, TOKEN_TYPE.EMAIL_CHANGE);
     if (!newToken) {
       flashMessage.text = m.core_form_shared_failedToGenerateToken();
       logger.error(flashMessage.text);

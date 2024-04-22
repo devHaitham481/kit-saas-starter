@@ -69,11 +69,11 @@ export const GET: RequestHandler = async ({ url, cookies, locals: { db, lucia } 
     }
 
     // check if the user already exists
-    const existingUser = await getUserByEmail(primaryEmail.email);
+    const existingUser = await getUserByEmail(db, primaryEmail.email);
 
     if (existingUser) {
       // check if the user already has a GitHub OAuth account linked
-      const existingOauthAccount = await getOAuthAccountByProviderUserId(AUTH_METHODS.GITHUB, githubUser.id.toString());
+      const existingOauthAccount = await getOAuthAccountByProviderUserId(db, AUTH_METHODS.GITHUB, githubUser.id.toString());
 
       if (!existingOauthAccount) {
         // add the 'github' auth provider to the user's authMethods list

@@ -13,6 +13,7 @@ import { getUserByUsername, updateUserById } from "$lib/server/db/users";
 import * as m from "$paraglide/messages";
 
 export const load: PageServerLoad = async ({ locals: { user } }) => {
+  // TODO add guard
   const { username } = user!;
   const form = await superValidate<SettingsProfileFormSchema, FlashMessage>({ username }, zod(settingsProfileFormSchema));
 
@@ -44,7 +45,7 @@ export const actions: Actions = {
     const { username } = form.data;
     const { id: userId } = locals.user!;
 
-    const existingUser = await getUserByUsername(username);
+    const existingUser = await getUserByUsername(locals.db, username);
     if (existingUser && existingUser.id !== userId) {
       flashMessage.text = "Username already taken";
       logger.debug(flashMessage.text);
@@ -52,7 +53,7 @@ export const actions: Actions = {
       return message(form, flashMessage, { status: 400 });
     }
 
-    const updatedUser = await updateUserById(userId, { username });
+    const updatedUser = await updateUserById(locals.db, userId, { username });
     if (!updatedUser) {
       flashMessage.text = m.core_form_shared_userNotFound();
       logger.debug(flashMessage.text);

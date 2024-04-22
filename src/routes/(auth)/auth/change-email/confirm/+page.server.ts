@@ -64,7 +64,7 @@ export const actions: Actions = {
     // TODO how can we remove that "as User" casting?
     const { id: userId } = locals.user as User;
 
-    const emailFromDatabase = await verifyToken(userId, token, TOKEN_TYPE.EMAIL_CHANGE);
+    const emailFromDatabase = await verifyToken(locals.db, userId, token, TOKEN_TYPE.EMAIL_CHANGE);
     if (!emailFromDatabase) {
       flashMessage.text = m.core_form_shared_invalidToken();
       logger.debug(flashMessage.text);
@@ -74,7 +74,7 @@ export const actions: Actions = {
 
     await locals.lucia.invalidateUserSessions(userId);
 
-    const updatedUser = await updateUserById(userId, { email: emailFromDatabase });
+    const updatedUser = await updateUserById(locals.db, userId, { email: emailFromDatabase });
     if (!updatedUser) {
       flashMessage.text = m.core_form_shared_failedToUpdateUser();
       logger.debug(flashMessage.text);
@@ -107,7 +107,7 @@ export const actions: Actions = {
     // TODO how can we remove that "as User" casting?
     const { id: userId, name } = locals.user as User;
 
-    const tokenFromDatabase = await getTokenByUserId(userId, TOKEN_TYPE.EMAIL_CHANGE);
+    const tokenFromDatabase = await getTokenByUserId(locals.db, userId, TOKEN_TYPE.EMAIL_CHANGE);
     if (!tokenFromDatabase) {
       flashMessage.text = m.core_form_shared_invalidToken();
       logger.debug(flashMessage.text);
@@ -118,7 +118,7 @@ export const actions: Actions = {
 
     const newEmail = tokenFromDatabase.email;
 
-    const newToken = await generateToken(userId, newEmail, TOKEN_TYPE.EMAIL_CHANGE);
+    const newToken = await generateToken(locals.db, userId, newEmail, TOKEN_TYPE.EMAIL_CHANGE);
     if (!newToken) {
       flashMessage.text = m.core_form_shared_failedToGenerateToken();
       logger.error(flashMessage.text);

@@ -13,6 +13,7 @@ import { notificationsSettingsLimiter } from "$configs/rate-limiters/app";
 import * as m from "$paraglide/messages";
 
 export const load: PageServerLoad = async ({ locals: { user } }) => {
+  // TODO add guard
   const { name } = user!;
   const form = await superValidate<SettingsNotificationsFormSchema, FlashMessage>({ name }, zod(settingsNotificationsFormSchema));
 
@@ -45,7 +46,7 @@ export const actions: Actions = {
     const { name } = form.data;
     const { id: userId } = locals.user!;
 
-    const updatedUser = await updateUserById(userId, { name });
+    const updatedUser = await updateUserById(locals.db, userId, { name });
     if (!updatedUser) {
       flashMessage.text = m.core_form_shared_userNotFound();
       logger.debug(flashMessage.text);
