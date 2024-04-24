@@ -35,6 +35,7 @@
   "validation_userId_isRequired": "UserId is required",
   "validation_userId_length": "User id must be {len} characters",
   "validation_username_isRequired": "Username is required",
+  "validation_username_isValid": "Invalid username",
   "validation_username_minLength": "Username must be at least {min} characters",
   "validation_username_maxLength": "Username must not exceed {max} characters",
   "core_form_shared_label_github": "GitHub",
