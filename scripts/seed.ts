@@ -12,13 +12,13 @@ async function main() {
   const { env } = await getPlatformProxy();
   const db = drizzle(env.DB as D1Database, { schema });
   const argon2id = new Argon2id();
+  const password = await argon2id.hash("Password123.");
 
   for (let i = 0; i < 10; i++) {
     const firstName = faker.person.firstName();
     const lastName = faker.person.lastName();
     const email = faker.internet.email({ firstName, lastName });
     const username = faker.internet.userName({ firstName, lastName });
-    const password = await argon2id.hash(username);
 
     const newUser = {
       id: faker.string.alphanumeric(USER_ID_LEN),

@@ -2,7 +2,7 @@ import { FLASH_MESSAGE_STATUS } from "$configs/general";
 import { route } from "$lib/ROUTES";
 import { error, type Cookies } from "@sveltejs/kit";
 import { redirect } from "sveltekit-flash-message/server";
-import * as m from "../../paraglide/messages";
+import * as m from "$paraglide/messages";
 
 /**
  * Checks if the user is anonymous.

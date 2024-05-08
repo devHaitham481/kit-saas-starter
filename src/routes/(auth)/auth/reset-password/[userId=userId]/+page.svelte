@@ -1,6 +1,6 @@
 <script lang="ts">
-  import * as Card from "$lib/components/ui/card";
-  import * as Form from "$lib/components/ui/form";
+  import * as Card from "$components/ui/card";
+  import * as Form from "$components/ui/form";
   import { route } from "$lib/ROUTES";
   import { Input } from "$components/ui/input";
   import { superForm } from "sveltekit-superforms";
@@ -8,7 +8,7 @@
   import * as flashModule from "sveltekit-flash-message/client";
   import { resetPasswordFormSchemaSecondStep } from "$validations/auth";
   import { Turnstile } from "$components/layout";
-  import { Loader2 } from "lucide-svelte";
+  import LoaderCircle from "lucide-svelte/icons/loader-circle";
   import { enhance } from "$app/forms";
   import * as m from "$paraglide/messages";
 
@@ -50,7 +50,7 @@
     <Turnstile action={"reset-password-confirm"} bind:resetTurnstile />
     <Form.Button type="submit" disabled={$delayed}>
       {#if $delayed}
-        <Loader2 class="mr-2 h-4 w-4 animate-spin" /> {m.core_form_shared_label_loading()}
+        <LoaderCircle class="mr-2 h-4 w-4 animate-spin" /> {m.core_form_shared_label_loading()}
       {:else}
         {m.core_form_shared_label_verify()}
       {/if}

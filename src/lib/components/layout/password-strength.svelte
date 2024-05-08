@@ -1,7 +1,8 @@
 <script lang="ts">
   import { slide } from "svelte/transition";
   import type { Result } from "check-password-strength";
-  import { Check, X } from "lucide-svelte";
+  import Check from "lucide-svelte/icons/check";
+  import X from "lucide-svelte/icons/x";
   import * as m from "$paraglide/messages";
 
   type Props = { pwd: Result<string>; myData: Array<{ name: string; isDone: boolean }> };

@@ -3,8 +3,8 @@
   import { i18n } from "$lib/i18n";
   import { page } from "$app/stores";
 
-  import { Button } from "$lib/components/ui/button";
-  import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
+  import { Button } from "$components/ui/button";
+  import * as DropdownMenu from "$components/ui/dropdown-menu";
 
   const flags = {
     en: "🇺🇸",

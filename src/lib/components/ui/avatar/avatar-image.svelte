@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Avatar as AvatarPrimitive } from "bits-ui";
-  import { cn } from "$lib/utils/style-transitions.js";
+  import { cn } from "$lib/utils/style-transitions";
 
   type $$Props = AvatarPrimitive.ImageProps;
 

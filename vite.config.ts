@@ -13,7 +13,7 @@ export default defineConfig({
     topLevelAwait(),
     paraglide({
       project: "./project.inlang",
-      outdir: "./src/lib/paraglide"
+      outdir: "./src/paraglide"
     }),
     sveltekit(),
     kitRoutes<KIT_ROUTES>({

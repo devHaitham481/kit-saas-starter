@@ -12,8 +12,9 @@
   import { route } from "$lib/ROUTES";
   import * as flashModule from "sveltekit-flash-message/client";
   import { passwordStrength, type FirstOption, type Result, type Option } from "check-password-strength";
-  import { Eye, EyeOff } from "lucide-svelte";
-  import { Loader2 } from "lucide-svelte";
+  import Eye from "lucide-svelte/icons/eye";
+  import EyeOff from "lucide-svelte/icons/eye-off";
+  import LoaderCircle from "lucide-svelte/icons/loader-circle";
   import * as m from "$paraglide/messages";
 
   let { data } = $props();
@@ -135,7 +136,7 @@
     <Turnstile action={"register"} bind:resetTurnstile />
     <Form.Button type="submit" class="mt-4" disabled={$delayed}>
       {#if $delayed}
-        <Loader2 class="mr-2 h-4 w-4 animate-spin" /> {m.core_form_shared_label_loading()}
+        <LoaderCircle class="mr-2 h-4 w-4 animate-spin" /> {m.core_form_shared_label_loading()}
       {:else}
         {m.core_form_shared_label_register()}
       {/if}

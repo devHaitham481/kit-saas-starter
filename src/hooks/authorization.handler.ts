@@ -3,7 +3,7 @@ import { route } from "$lib/ROUTES";
 import { logger } from "$lib/logger";
 import { error, type Handle } from "@sveltejs/kit";
 import { redirect } from "sveltekit-flash-message/server";
-import * as m from "../lib/paraglide/messages";
+import * as m from "$paraglide/messages";
 
 export const authorization: Handle = async ({ event, resolve }) => {
   const {

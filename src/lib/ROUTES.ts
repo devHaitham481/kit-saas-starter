@@ -10,11 +10,12 @@
  */
 const PAGES = {
   "/admin": `/admin`,
-  "/admin/database/tokens": `/admin/database/tokens`,
-  "/admin/database/users": `/admin/database/users`,
-  "/admin/database/users/[userId=userId]": (params: { userId: Parameters<typeof import("../params/userId.ts").match>[0] }) => {
-    return `/admin/database/users/${params.userId}`;
+  "/admin/customers": `/admin/customers`,
+  "/admin/customers/[userId=userId]": (params: { userId: Parameters<typeof import("../params/userId.ts").match>[0] }) => {
+    return `/admin/customers/${params.userId}`;
   },
+  "/admin/orders": `/admin/orders`,
+  "/admin/products": `/admin/products`,
   "/admin/settings": `/admin/settings`,
   "/app/billing": `/app/billing`,
   "/app/dashboard": `/app/dashboard`,
@@ -57,10 +58,8 @@ const SERVERS = {
  * ACTIONS
  */
 const ACTIONS = {
-  "updateUser /admin/database/tokens": `/admin/database/tokens?/updateUser`,
-  "deleteUser /admin/database/tokens": `/admin/database/tokens?/deleteUser`,
-  "deleteUser /admin/database/users": `/admin/database/users?/deleteUser`,
-  "updateUser /admin/database/users": `/admin/database/users?/updateUser`,
+  "deleteUser /admin/customers": `/admin/customers?/deleteUser`,
+  "updateUser /admin/customers": `/admin/customers?/updateUser`,
   "default /app/settings/account": `/app/settings/account`,
   "default /app/settings/notifications": `/app/settings/notifications`,
   "default /app/settings/profile": `/app/settings/profile`,
@@ -202,9 +201,10 @@ export function route<T extends keyof AllTypes>(key: T, ...params: any[]): strin
 export type KIT_ROUTES = {
   PAGES: {
     "/admin": never;
-    "/admin/database/tokens": never;
-    "/admin/database/users": never;
-    "/admin/database/users/[userId=userId]": "userId";
+    "/admin/customers": never;
+    "/admin/customers/[userId=userId]": "userId";
+    "/admin/orders": never;
+    "/admin/products": never;
     "/admin/settings": never;
     "/app/billing": never;
     "/app/dashboard": never;
@@ -233,10 +233,8 @@ export type KIT_ROUTES = {
     "GET /auth/oauth/google/callback": never;
   };
   ACTIONS: {
-    "updateUser /admin/database/tokens": never;
-    "deleteUser /admin/database/tokens": never;
-    "deleteUser /admin/database/users": never;
-    "updateUser /admin/database/users": never;
+    "deleteUser /admin/customers": never;
+    "updateUser /admin/customers": never;
     "default /app/settings/account": never;
     "default /app/settings/notifications": never;
     "default /app/settings/profile": never;

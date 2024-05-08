@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Loader2 } from "lucide-svelte";
-  import { Input } from "$lib/components/ui/input";
-  import * as Form from "$lib/components/ui/form";
+  import LoaderCircle from "lucide-svelte/icons/loader-circle";
+  import { Input } from "$components/ui/input";
+  import * as Form from "$components/ui/form";
   import * as flashModule from "sveltekit-flash-message/client";
   import { superForm } from "sveltekit-superforms";
   import { zodClient } from "sveltekit-superforms/adapters";
@@ -63,7 +63,7 @@
   </Form.Field>
   <Form.Button type="submit" disabled={$delayed}>
     {#if $delayed}
-      <Loader2 class="mr-2 h-4 w-4 animate-spin" /> Loading...
+      <LoaderCircle class="mr-2 h-4 w-4 animate-spin" /> Loading...
     {:else}
       Edit user
     {/if}

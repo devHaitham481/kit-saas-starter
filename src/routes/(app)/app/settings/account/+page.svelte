@@ -1,11 +1,11 @@
 <script lang="ts">
   import { Separator } from "$components/ui/separator";
   import { superForm } from "sveltekit-superforms";
-  import * as Form from "$lib/components/ui/form";
-  import { Input } from "$lib/components/ui/input";
+  import * as Form from "$components/ui/form";
+  import { Input } from "$components/ui/input";
   import { zodClient } from "sveltekit-superforms/adapters";
   import * as flashModule from "sveltekit-flash-message/client";
-  import { Loader2 } from "lucide-svelte";
+  import LoaderCircle from "lucide-svelte/icons/loader-circle";
   import { settingsAccountFormSchema } from "$validations/app/settings";
 
   let { data } = $props();
@@ -42,7 +42,7 @@
     </Form.Field>
     <Form.Button type="submit" disabled={$delayed} class="w-44">
       {#if $delayed}
-        <Loader2 class="mr-2 h-4 w-4 animate-spin" /> Loading...
+        <LoaderCircle class="mr-2 h-4 w-4 animate-spin" /> Loading...
       {:else}
         Update account
       {/if}

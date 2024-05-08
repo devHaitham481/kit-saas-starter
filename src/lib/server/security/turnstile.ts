@@ -1,6 +1,6 @@
 import { CLOUDFLARE_TURNSTILE_SECRET } from "$env/static/private";
 import { logger } from "$lib/logger";
-import * as m from "../../paraglide/messages";
+import * as m from "$paraglide/messages";
 
 interface TokenValidateResponse {
   "error-codes": string[];

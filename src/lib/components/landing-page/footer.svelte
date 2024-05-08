@@ -1,8 +1,8 @@
 <script lang="ts">
   import { route } from "$lib/ROUTES";
   import { socials, sections } from "$configs/landing/footer-links";
-  import { APP_NAME } from "$configs/general";
   import * as m from "$paraglide/messages";
+  import { Logo } from "$components/layout";
 
   let currentYear = $state("");
 
@@ -14,10 +14,7 @@
 <footer class="border-t border-gray-500 py-10 dark:border-gray-600">
   <div class="md:flex md:justify-between">
     <div class="mb-6 md:mb-0">
-      <a href={route("/")} class="flex items-center gap-3">
-        <img src="/logo.png" class="size-8" alt={`${APP_NAME} Logo`} />
-        <span class="text-xl font-bold text-black dark:text-white">{APP_NAME}</span>
-      </a>
+      <Logo href={route("/")} hidden={false} />
     </div>
     <div class="grid grid-cols-2 gap-8 sm:grid-cols-2 sm:gap-6">
       {#each sections as { name, data }}

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Dialog as DialogPrimitive } from "bits-ui";
-  import { cn } from "$lib/utils/style-transitions.js";
+  import { cn } from "$lib/utils/style-transitions";
 
   type $$Props = DialogPrimitive.DescriptionProps;
 

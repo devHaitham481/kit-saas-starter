@@ -10,7 +10,7 @@
   import { route } from "$lib/ROUTES.js";
   import * as flashModule from "sveltekit-flash-message/client";
   import { Turnstile } from "$components/layout";
-  import { Loader2 } from "lucide-svelte";
+  import LoaderCircle from "lucide-svelte/icons/loader-circle";
   import * as m from "$paraglide/messages";
 
   let { data } = $props();
@@ -73,7 +73,7 @@
     <Turnstile action={"login"} bind:resetTurnstile />
     <Form.Button type="submit" disabled={$delayed}>
       {#if $delayed}
-        <Loader2 class="mr-2 h-4 w-4 animate-spin" /> {m.core_form_shared_label_loading()}
+        <LoaderCircle class="mr-2 h-4 w-4 animate-spin" /> {m.core_form_shared_label_loading()}
       {:else}
         {m.core_form_shared_label_login()}
       {/if}

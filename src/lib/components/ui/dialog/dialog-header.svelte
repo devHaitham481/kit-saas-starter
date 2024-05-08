@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { cn } from "$lib/utils/style-transitions.js";
   import type { HTMLAttributes } from "svelte/elements";
+  import { cn } from "$lib/utils/style-transitions";
 
   type $$Props = HTMLAttributes<HTMLDivElement>;
 

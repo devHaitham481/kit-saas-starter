@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Switch as SwitchPrimitive } from "bits-ui";
-  import { cn } from "$lib/utils/style-transitions.js";
+  import { cn } from "$lib/utils/style-transitions";
 
   type $$Props = SwitchPrimitive.Props;
   type $$Events = SwitchPrimitive.Events;

@@ -1,7 +1,7 @@
 <script lang="ts">
   import "../app.pcss";
   import { ModeWatcher } from "mode-watcher";
-  import { Toaster } from "$lib/components/ui/sonner";
+  import { Toaster } from "$components/ui/sonner";
   import { getFlash } from "sveltekit-flash-message";
   import { page } from "$app/stores";
   import { toast } from "svelte-sonner";

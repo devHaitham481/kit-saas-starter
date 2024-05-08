@@ -1,5 +1,12 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
+  "dashboard": "Pannello di controllo",
+  "customers": "Clienti",
+  "orders": "Ordini",
+  "products": "Prodotti",
+  "settings": "Impostazioni",
+  "label_toggleMenu": "Toggle menu",
+  "label_search": "Cerca...",
   "email_emailVerification_title": "Verifica la tua email per {appName}",
   "email_welcome_title": "Benvenuto su {appName}",
   "email_passwordReset_title": "Recupera la tua password per {appName}",
