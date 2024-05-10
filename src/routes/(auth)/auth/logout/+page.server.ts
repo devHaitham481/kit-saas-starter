@@ -8,9 +8,7 @@ export const actions: Actions = {
   default: async ({ locals, url, cookies }) => {
     isUserAuthenticated(locals, cookies, url);
 
-    // ! user is defined here because of "isUserAuthenticated"
-    // TODO how can we remove that "!"?
-    await locals.lucia.invalidateSession(locals.session!.id);
+    await locals.lucia.invalidateSession(locals.session.id);
     destroySession(locals.lucia, cookies);
 
     redirect(302, route("/"));

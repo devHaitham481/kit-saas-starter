@@ -4,6 +4,16 @@ import { error, type Cookies } from "@sveltejs/kit";
 import { redirect } from "sveltekit-flash-message/server";
 import * as m from "$paraglide/messages";
 
+type NonNullable<T> = Exclude<T, null | undefined>; // Remove null and undefined from T
+
+type DefinedLocals = {
+  user: NonNullable<App.Locals["user"]>;
+  session: NonNullable<App.Locals["session"]>;
+  paraglide: NonNullable<App.Locals["paraglide"]>;
+  lucia: NonNullable<App.Locals["lucia"]>;
+  db: NonNullable<App.Locals["db"]>;
+};
+
 /**
  * Checks if the user is anonymous.
  * Redirects them to the dashboard if they are not.
@@ -24,7 +34,7 @@ export function isAnonymous(locals: App.Locals) {
  * @param {Cookies} cookies - The cookies object of RequestEvent.
  * @returns void
  */
-export function isUserAuthenticated(locals: App.Locals, cookies: Cookies, url: URL) {
+export function isUserAuthenticated(locals: App.Locals, cookies: Cookies, url: URL): asserts locals is DefinedLocals {
   if (!locals.user && !locals.session) {
     const redirectTo = url.pathname;
     const flashMessage = { status: FLASH_MESSAGE_STATUS.SUCCESS, text: m.flash_login() };
@@ -42,7 +52,7 @@ export function isUserAuthenticated(locals: App.Locals, cookies: Cookies, url: U
  * @param {Cookies} cookies - The cookies object of RequestEvent.
  * @returns void
  */
-export function isUserNotVerified(locals: App.Locals, cookies: Cookies, url: URL) {
+export function isUserNotVerified(locals: App.Locals, cookies: Cookies, url: URL): asserts locals is DefinedLocals {
   isUserAuthenticated(locals, cookies, url);
 
   if (locals.user?.isVerified) {
@@ -61,7 +71,7 @@ export function isUserNotVerified(locals: App.Locals, cookies: Cookies, url: URL
  * @param {Cookies} cookies - The cookies object of RequestEvent.
  * @returns void
  */
-export function isUserAdmin(locals: App.Locals, cookies: Cookies, url: URL) {
+export function isUserAdmin(locals: App.Locals, cookies: Cookies, url: URL): asserts locals is DefinedLocals {
   isUserAuthenticated(locals, cookies, url);
 
   if (!locals.user?.isAdmin) error(404);

@@ -11,7 +11,6 @@ import { generateToken } from "$lib/server/auth/auth-utils";
 import { TOKEN_TYPE } from "$lib/server/db/tokens";
 import { isUserAuthenticated, validateTurnstileToken, verifyRateLimiter } from "$lib/server/security";
 import { changeEmailLimiter } from "$configs/rate-limiters/auth";
-import type { User } from "lucia";
 import { FLASH_MESSAGE_STATUS } from "$configs/general";
 import { getUserByEmail } from "$lib/server/db/users";
 import * as m from "$paraglide/messages";
@@ -48,9 +47,7 @@ export const actions: Actions = {
       return message(form, flashMessage);
     }
 
-    // ! user is defined here because of "isUserVerified"
-    // TODO how can we remove that "as User" casting?
-    const { id: userId, name } = locals.user as User;
+    const { id: userId, name } = locals.user;
     const { email: newEmail, turnstileToken } = form.data;
 
     const ip = getClientAddress();

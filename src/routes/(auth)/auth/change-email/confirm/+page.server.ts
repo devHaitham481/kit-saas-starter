@@ -11,7 +11,6 @@ import { generateToken, verifyToken } from "$lib/server/auth/auth-utils";
 import { TOKEN_TYPE, getTokenByUserId } from "$lib/server/db/tokens";
 import { isUserAuthenticated, validateTurnstileToken, verifyRateLimiter } from "$lib/server/security";
 import { changeEmailLimiter } from "$configs/rate-limiters/auth";
-import type { User } from "lucia";
 import { FLASH_MESSAGE_STATUS } from "$configs/general";
 import { sendEmailChangeEmail } from "$lib/server/email/send";
 import { resendChangeEmailLimiter } from "$configs/rate-limiters/auth";
@@ -60,9 +59,7 @@ export const actions: Actions = {
       return message(form, flashMessage, { status: 400 });
     }
 
-    // ! user is defined here because of "isUserAuthenticated"
-    // TODO how can we remove that "as User" casting?
-    const { id: userId } = locals.user as User;
+    const { id: userId } = locals.user;
 
     const emailFromDatabase = await verifyToken(locals.db, userId, token, TOKEN_TYPE.EMAIL_CHANGE);
     if (!emailFromDatabase) {
@@ -103,9 +100,7 @@ export const actions: Actions = {
       return fail(429);
     }
 
-    // ! user is defined here because of "isUserVerified"
-    // TODO how can we remove that "as User" casting?
-    const { id: userId, name } = locals.user as User;
+    const { id: userId, name } = locals.user;
 
     const tokenFromDatabase = await getTokenByUserId(locals.db, userId, TOKEN_TYPE.EMAIL_CHANGE);
     if (!tokenFromDatabase) {
