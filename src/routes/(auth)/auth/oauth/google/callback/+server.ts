@@ -5,12 +5,12 @@ import { route } from "$lib/ROUTES";
 import { GOOGLE_OAUTH_CODE_VERIFIER_COOKIE_NAME, GOOGLE_OAUTH_STATE_COOKIE_NAME } from "$configs/cookies-names";
 import { AUTH_METHODS } from "$configs/auth-methods";
 import { error } from "@sveltejs/kit";
-import { googleOauth } from "$lib/server/auth";
+import { googleOauth } from "$server/auth";
 import { redirect } from "sveltekit-flash-message/server";
 import { logger } from "$lib/logger";
-import { getUserByEmail, users } from "$lib/server/db/users";
-import { getOAuthAccountByProviderUserId, oauthAccounts } from "$lib/server/db/oauth-accounts";
-import { createAndSetSession } from "$lib/server/auth/auth-utils";
+import { getUserByEmail, users } from "$server/db/users";
+import { getOAuthAccountByProviderUserId, oauthAccounts } from "$server/db/oauth-accounts";
+import { createAndSetSession } from "$server/auth/auth-utils";
 import { eq } from "drizzle-orm";
 import * as m from "$paraglide/messages";
 

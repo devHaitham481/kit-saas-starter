@@ -1,5 +1,5 @@
 import type { Handle } from "@sveltejs/kit";
-import { schema } from "$lib/server/db";
+import { schema } from "$server/db";
 import { drizzle } from "drizzle-orm/d1";
 
 export const database: Handle = async ({ event, resolve }) => {

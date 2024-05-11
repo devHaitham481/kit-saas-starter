@@ -1,4 +1,4 @@
-import { getUserById } from "$lib/server/db/users";
+import { getUserById } from "$server/db/users";
 import { error } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 import { superValidate } from "sveltekit-superforms";

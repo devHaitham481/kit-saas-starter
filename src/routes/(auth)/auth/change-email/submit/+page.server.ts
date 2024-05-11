@@ -5,14 +5,14 @@ import { changeEmailFormSchemaFirstStep, type ChangeEmailFormSchemaFirstStep } f
 import { superValidate, message } from "sveltekit-superforms/server";
 import { zod } from "sveltekit-superforms/adapters";
 import { logger } from "$lib/logger";
-import { sendEmailChangeEmail } from "$lib/server/email/send";
+import { sendEmailChangeEmail } from "$server/email/send";
 import { redirect, setFlash } from "sveltekit-flash-message/server";
-import { generateToken } from "$lib/server/auth/auth-utils";
-import { TOKEN_TYPE } from "$lib/server/db/tokens";
-import { isUserAuthenticated, validateTurnstileToken, verifyRateLimiter } from "$lib/server/security";
+import { generateToken } from "$server/auth/auth-utils";
+import { TOKEN_TYPE } from "$server/db/tokens";
+import { isUserAuthenticated, validateTurnstileToken, verifyRateLimiter } from "$server/security";
 import { changeEmailLimiter } from "$configs/rate-limiters/auth";
 import { FLASH_MESSAGE_STATUS } from "$configs/general";
-import { getUserByEmail } from "$lib/server/db/users";
+import { getUserByEmail } from "$server/db/users";
 import * as m from "$paraglide/messages";
 
 export const load = (async ({ locals, cookies, url }) => {

@@ -5,12 +5,12 @@ import { verifyEmailFormSchema, type VerifyEmailFormSchema } from "$validations/
 import { superValidate, message } from "sveltekit-superforms/server";
 import { zod } from "sveltekit-superforms/adapters";
 import { logger } from "$lib/logger";
-import { createAndSetSession, generateToken, verifyToken } from "$lib/server/auth/auth-utils";
-import { getUserByEmail, updateUserById } from "$lib/server/db/users";
-import { sendEmailVerificationEmail, sendWelcomeEmail } from "$lib/server/email/send";
+import { createAndSetSession, generateToken, verifyToken } from "$server/auth/auth-utils";
+import { getUserByEmail, updateUserById } from "$server/db/users";
+import { sendEmailVerificationEmail, sendWelcomeEmail } from "$server/email/send";
 import { AUTH_METHODS } from "$configs/auth-methods";
-import { TOKEN_TYPE } from "$lib/server/db/tokens";
-import { isUserNotVerified, validateTurnstileToken, verifyRateLimiter } from "$lib/server/security";
+import { TOKEN_TYPE } from "$server/db/tokens";
+import { isUserNotVerified, validateTurnstileToken, verifyRateLimiter } from "$server/security";
 import { FLASH_MESSAGE_STATUS } from "$configs/general";
 import { redirect, setFlash } from "sveltekit-flash-message/server";
 import { verifyEmailLimiter, resendVerifyEmailLimiter } from "$configs/rate-limiters/auth";

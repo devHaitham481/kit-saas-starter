@@ -6,14 +6,14 @@ import { logger } from "$lib/logger";
 import { route } from "$lib/ROUTES";
 import { redirect, setFlash } from "sveltekit-flash-message/server";
 import type { PageServerLoad } from "./$types";
-import { generateToken, verifyToken } from "$lib/server/auth/auth-utils";
-import { TOKEN_TYPE } from "$lib/server/db/tokens";
-import { isAnonymous, validateTurnstileToken, verifyRateLimiter } from "$lib/server/security";
+import { generateToken, verifyToken } from "$server/auth/auth-utils";
+import { TOKEN_TYPE } from "$server/db/tokens";
+import { isAnonymous, validateTurnstileToken, verifyRateLimiter } from "$server/security";
 import { resetPasswordLimiter } from "$configs/rate-limiters/auth";
 import { FLASH_MESSAGE_STATUS } from "$configs/general";
 import { resendResetPasswordLimiter } from "$configs/rate-limiters/auth";
-import { sendPasswordResetEmail } from "$lib/server/email/send";
-import { getUserById } from "$lib/server/db/users";
+import { sendPasswordResetEmail } from "$server/email/send";
+import { getUserById } from "$server/db/users";
 import * as m from "$paraglide/messages";
 
 export const load = (async ({ locals, params }) => {

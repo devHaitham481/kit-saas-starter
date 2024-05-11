@@ -1,4 +1,4 @@
-import { deleteUserById, getAllUsers, updateUserById } from "$lib/server/db/users";
+import { deleteUserById, getAllUsers, updateUserById } from "$server/db/users";
 import { type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 import { setFlash } from "sveltekit-flash-message/server";

@@ -4,12 +4,12 @@ import { zod } from "sveltekit-superforms/adapters";
 import { settingsProfileFormSchema, type SettingsProfileFormSchema } from "$validations/app/settings";
 import { fail, type Actions } from "@sveltejs/kit";
 import { FLASH_MESSAGE_STATUS } from "$configs/general";
-import { verifyRateLimiter } from "$lib/server/security";
+import { verifyRateLimiter } from "$server/security";
 import { profileSettingsLimiter } from "$configs/rate-limiters/app";
 import { logger } from "$lib/logger";
 import { redirect, setFlash } from "sveltekit-flash-message/server";
 import { route } from "$lib/ROUTES";
-import { getUserByUsername, updateUserById } from "$lib/server/db/users";
+import { getUserByUsername, updateUserById } from "$server/db/users";
 import * as m from "$paraglide/messages";
 
 export const load: PageServerLoad = async ({ locals: { user } }) => {

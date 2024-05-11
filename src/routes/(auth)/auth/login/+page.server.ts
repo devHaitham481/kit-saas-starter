@@ -1,15 +1,15 @@
 import type { PageServerLoad, Actions } from "./$types";
-import { createAndSetSession } from "$lib/server/auth/auth-utils";
+import { createAndSetSession } from "$server/auth/auth-utils";
 import { loginFormSchema, type LoginFormSchema } from "$validations/auth";
 import { message, superValidate } from "sveltekit-superforms/server";
 import { zod } from "sveltekit-superforms/adapters";
 import { redirect, setFlash } from "sveltekit-flash-message/server";
 import { route } from "$lib/ROUTES";
-import { getUserByEmail } from "$lib/server/db/users";
+import { getUserByEmail } from "$server/db/users";
 import { logger } from "$lib/logger";
 import { verifyPassword } from "worker-password-auth";
 import { AUTH_METHODS } from "$configs/auth-methods";
-import { isAnonymous, validateTurnstileToken, verifyRateLimiter } from "$lib/server/security";
+import { isAnonymous, validateTurnstileToken, verifyRateLimiter } from "$server/security";
 import { loginLimiter } from "$configs/rate-limiters/auth";
 import { FLASH_MESSAGE_STATUS } from "$configs/general";
 import { fail } from "@sveltejs/kit";

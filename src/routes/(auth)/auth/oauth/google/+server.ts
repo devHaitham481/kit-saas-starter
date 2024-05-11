@@ -2,7 +2,7 @@ import { redirect } from "@sveltejs/kit";
 import { generateCodeVerifier, generateState } from "arctic";
 
 import { GOOGLE_OAUTH_CODE_VERIFIER_COOKIE_NAME, GOOGLE_OAUTH_STATE_COOKIE_NAME } from "$configs/cookies-names";
-import { googleOauth } from "$lib/server/auth";
+import { googleOauth } from "$server/auth";
 import type { RequestHandler } from "./$types";
 import { dev } from "$app/environment";
 

@@ -1,6 +1,6 @@
 import { route } from "$lib/ROUTES";
-import { destroySession } from "$lib/server/auth/auth-utils";
-import { isUserAuthenticated } from "$lib/server/security";
+import { destroySession } from "$server/auth/auth-utils";
+import { isUserAuthenticated } from "$server/security";
 import type { Actions } from "./$types";
 import { redirect } from "@sveltejs/kit";
 
