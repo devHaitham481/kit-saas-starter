@@ -4,15 +4,13 @@ import { error, type Cookies } from "@sveltejs/kit";
 import { redirect } from "sveltekit-flash-message/server";
 import * as m from "$paraglide/messages";
 
-type NonNullable<T> = Exclude<T, null | undefined>; // Remove null and undefined from T
-
-type DefinedLocals = {
-  user: NonNullable<App.Locals["user"]>;
-  session: NonNullable<App.Locals["session"]>;
-  paraglide: NonNullable<App.Locals["paraglide"]>;
-  lucia: NonNullable<App.Locals["lucia"]>;
-  db: NonNullable<App.Locals["db"]>;
+type User = App.Locals["user"];
+type Session = App.Locals["session"];
+type NoNullUserAndSessionField<T> = {
+  [K in keyof T]: T[K] extends User | Session ? NonNullable<T[K]> : T[K];
 };
+
+type DefinedUserAndSession = NoNullUserAndSessionField<App.Locals>;
 
 /**
  * Checks if the user is anonymous.
@@ -34,7 +32,7 @@ export function isAnonymous(locals: App.Locals) {
  * @param {Cookies} cookies - The cookies object of RequestEvent.
  * @returns void
  */
-export function isUserAuthenticated(locals: App.Locals, cookies: Cookies, url: URL): asserts locals is DefinedLocals {
+export function isUserAuthenticated(locals: App.Locals, cookies: Cookies, url: URL): asserts locals is DefinedUserAndSession {
   if (!locals.user && !locals.session) {
     const redirectTo = url.pathname;
     const flashMessage = { status: FLASH_MESSAGE_STATUS.SUCCESS, text: m.flash_login() };
@@ -52,7 +50,7 @@ export function isUserAuthenticated(locals: App.Locals, cookies: Cookies, url: U
  * @param {Cookies} cookies - The cookies object of RequestEvent.
  * @returns void
  */
-export function isUserNotVerified(locals: App.Locals, cookies: Cookies, url: URL): asserts locals is DefinedLocals {
+export function isUserNotVerified(locals: App.Locals, cookies: Cookies, url: URL): asserts locals is DefinedUserAndSession {
   isUserAuthenticated(locals, cookies, url);
 
   if (locals.user?.isVerified) {
@@ -71,7 +69,7 @@ export function isUserNotVerified(locals: App.Locals, cookies: Cookies, url: URL
  * @param {Cookies} cookies - The cookies object of RequestEvent.
  * @returns void
  */
-export function isUserAdmin(locals: App.Locals, cookies: Cookies, url: URL): asserts locals is DefinedLocals {
+export function isUserAdmin(locals: App.Locals, cookies: Cookies, url: URL): asserts locals is DefinedUserAndSession {
   isUserAuthenticated(locals, cookies, url);
 
   if (!locals.user?.isAdmin) error(404);
