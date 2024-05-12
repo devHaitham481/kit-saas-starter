@@ -28,6 +28,6 @@
   </div>
 </nav>
 
-<section>
+<section class="flex justify-center p-2">
   {@render children()}
 </section>
