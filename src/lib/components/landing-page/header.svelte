@@ -30,7 +30,7 @@
       <LanguageSwitcher />
       <ThemeSwitcher />
       {#if user}
-        <form method="post" action="/auth/logout" use:enhance>
+        <form method="post" action={route("default /auth/logout")} use:enhance>
           <Button type="submit" variant="outline">{m.core_form_shared_label_logout()}</Button>
         </form>
         <Button href={route("/app/dashboard")}>
