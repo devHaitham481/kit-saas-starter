@@ -28,3 +28,8 @@ export const SESSION_EXPIRATION_TIME = 30; // days
  */
 export const TOKEN_LEN = 15; // characters
 export const TOKEN_EXPIRATION_TIME = 30; // minutes
+
+/**
+ * Stripe
+ */
+export const PRICE_ID_LEN = 30; // characters

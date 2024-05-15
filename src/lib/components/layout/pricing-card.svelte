@@ -46,7 +46,7 @@
   <Card.Footer>
     <form method="POST" use:enhance>
       <input type="hidden" name="priceId" value={priceId} />
-      <Button class="w-full" type="submit">Subscribe</Button>
+      <Button type="submit">Subscribe</Button>
     </form>
   </Card.Footer>
 </Card.Root>

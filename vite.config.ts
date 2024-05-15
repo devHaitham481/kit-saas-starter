@@ -8,6 +8,9 @@ import { paraglide } from "@inlang/paraglide-js-adapter-sveltekit/vite";
 import * as LINKS from "./src/lib/configs/links";
 
 export default defineConfig({
+  optimizeDeps: {
+    exclude: ['worker-password-auth']
+  },
   plugins: [
     wasm(),
     topLevelAwait(),
@@ -37,6 +40,11 @@ export default defineConfig({
         "/auth/login": {
           explicit_search_params: {
             redirectTo: { type: "string" }
+          }
+        },
+        "/order/success": {
+          explicit_search_params: {
+            sessionId: { type: "string" }
           }
         }
       }
