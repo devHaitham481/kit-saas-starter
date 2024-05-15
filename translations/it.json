@@ -36,6 +36,8 @@
   "validation_password_options_containsUppercases": "Deve contenere caratteri maiuscoli.",
   "validation_password_options_containsNumbers": "Deve contenere numeri.",
   "validation_password_options_containsSpecialCharacters": "Deve contenere caratteri speciali.",
+  "validation_priceId_isRequired": "L'identificativo del prezzo è obbligatorio",
+  "validation_priceId_length": "L'identificativo del prezzo deve essere lungo {len} caratteri",
   "validation_token_isRequired": "Il codice è obbligatorio",
   "validation_token_length": "Il codice deve essere lungo {len} caratteri",
   "validation_turnstile_isRequired": "Il codice Turnstile è obbligatorio",

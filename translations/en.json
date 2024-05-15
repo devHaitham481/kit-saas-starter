@@ -36,6 +36,8 @@
   "validation_password_options_containsUppercases": "Must contain uppercase.",
   "validation_password_options_containsNumbers": "Must contain numbers.",
   "validation_password_options_containsSpecialCharacters": "Must contain special characters.",
+  "validation_priceId_isRequired": "Price ID is required",
+  "validation_priceId_length": "Price ID must be {len} characters",
   "validation_token_isRequired": "Token is required",
   "validation_token_length": "Token must be {len} characters",
   "validation_turnstile_isRequired": "Turnstile token is required",
