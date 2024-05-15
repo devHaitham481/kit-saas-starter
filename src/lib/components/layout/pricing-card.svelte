@@ -2,29 +2,33 @@
   import { fly } from "svelte/transition";
   import Check from "lucide-svelte/icons/check";
 
-  import type { BillingPeriod, Subscription } from "$configs/subscriptions";
+  import type { BillingInterval, Plan } from "$configs/plans";
 
   import * as Card from "$components/ui/card";
-  import { Button } from "$components/ui/button";
+  import { enhance } from "$app/forms";
+  import Button from "$components/ui/button/button.svelte";
 
   type Props = {
-    data: Subscription;
-    billingPeriod: BillingPeriod;
+    plan: Plan;
+    billingInterval: BillingInterval;
   };
 
-  let { data, billingPeriod }: Props = $props();
+  let { plan, billingInterval }: Props = $props();
 
-  const { name, description, price, features, href } = data;
+  let price = $derived(plan[billingInterval].price);
+  let priceId = $derived(plan[billingInterval].priceId);
+
+  const { name, description, features } = plan;
 </script>
 
 <Card.Root class="max-w-96">
   <Card.Header>
     <Card.Title class="text-center text-2xl">{name}</Card.Title>
     <Card.Description class="pb-6">{description}</Card.Description>
-    {#key billingPeriod}
+    {#key billingInterval}
       <div class="absolute flex items-baseline justify-center pt-20" in:fly={{ y: -50, duration: 200 }} out:fly={{ y: 50, duration: 200 }}>
-        <span class="mr-2 text-5xl font-extrabold">${price[billingPeriod]}</span>
-        <span class="text-gray-500 dark:text-gray-400">/ {billingPeriod}</span>
+        <span class="mr-2 text-5xl font-extrabold">${price}</span>
+        <span class="text-gray-500 dark:text-gray-400">/ {billingInterval}</span>
       </div>
     {/key}
   </Card.Header>
@@ -40,6 +44,9 @@
     </ul>
   </Card.Content>
   <Card.Footer>
-    <Button {href} class="w-full">Get started</Button>
+    <form method="POST" use:enhance>
+      <input type="hidden" name="priceId" value={priceId} />
+      <Button class="w-full" type="submit">Subscribe</Button>
+    </form>
   </Card.Footer>
 </Card.Root>

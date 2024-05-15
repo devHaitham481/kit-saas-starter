@@ -3,11 +3,11 @@
   import { Switch } from "$lib/components/ui/switch/index.js";
   import { Badge } from "$lib/components/ui/badge/index.js";
 
-  import { BillingPeriod, subscriptions } from "$configs/subscriptions";
+  import { BillingInterval, plans } from "$configs/plans";
   import { PricingCard } from "$components/layout";
 
   let isYearlySubscription = $state<boolean>(false);
-  let billingPeriod = $derived<BillingPeriod>(isYearlySubscription ? BillingPeriod.YEARLY : BillingPeriod.MONTHLY);
+  let billingInterval = $derived<BillingInterval>(isYearlySubscription ? BillingInterval.YEARLY : BillingInterval.MONTHLY);
 </script>
 
 <div class="mx-auto w-full max-w-screen-xl px-4 py-6 lg:px-6 lg:py-16">
@@ -24,8 +24,8 @@
     </div>
   </div>
   <div class="grid space-y-8 sm:gap-6 md:grid-cols-2 md:space-y-0 lg:grid-cols-3 xl:gap-10">
-    {#each subscriptions as subscription}
-      <PricingCard data={subscription} {billingPeriod}></PricingCard>
+    {#each plans as plan}
+      <PricingCard {plan} {billingInterval}></PricingCard>
     {/each}
   </div>
 </div>
