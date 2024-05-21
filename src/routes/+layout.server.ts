@@ -1,6 +1,6 @@
 import { loadFlash } from "sveltekit-flash-message/server";
 import type { LayoutServerLoad } from "./$types";
 
-export const load = loadFlash(async ({ url }) => {
-  return { url: url.pathname };
+export const load = loadFlash(async ({ url, locals }) => {
+  return { url: url.pathname, user: locals.user };
 }) satisfies LayoutServerLoad;

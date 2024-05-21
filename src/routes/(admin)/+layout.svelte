@@ -56,7 +56,7 @@
               use:builder.action
               {...builder}
             >
-              <svelte:component this={icon} class="h-5 w-5" />
+              <svelte:component this={icon} class="size-5" />
               <span class="sr-only">{name}</span>
             </a>
           </Tooltip.Trigger>
@@ -89,7 +89,7 @@
                 class:text-muted-foreground={$page.url.pathname !== href}
                 class:text-foreground={$page.url.pathname === href}
               >
-                <svelte:component this={icon} class="h-5 w-5" />
+                <svelte:component this={icon} class="size-5" />
                 {name}
               </a>
             {/each}
