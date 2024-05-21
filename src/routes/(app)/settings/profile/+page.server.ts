@@ -4,7 +4,7 @@ import { zod } from "sveltekit-superforms/adapters";
 import { settingsProfileFormSchema, type SettingsProfileFormSchema } from "$validations/app/settings";
 import { fail, type Actions } from "@sveltejs/kit";
 import { FLASH_MESSAGE_STATUS } from "$configs/general";
-import { verifyRateLimiter } from "$server/security";
+import { isUserAuthenticated, verifyRateLimiter } from "$server/security";
 import { profileSettingsLimiter } from "$configs/rate-limiters/app";
 import { logger } from "$lib/logger";
 import { redirect, setFlash } from "sveltekit-flash-message/server";
@@ -12,18 +12,22 @@ import { route } from "$lib/ROUTES";
 import { getUserByUsername, updateUserById } from "$server/db/users";
 import * as m from "$paraglide/messages";
 
-export const load: PageServerLoad = async ({ locals: { user } }) => {
-  // TODO add guard
-  const { username } = user!;
-  const form = await superValidate<SettingsProfileFormSchema, FlashMessage>({ username }, zod(settingsProfileFormSchema));
+export const load: PageServerLoad = async ({ locals, cookies, url }) => {
+  isUserAuthenticated(locals, cookies, url);
+
+  const { user } = locals;
+
+  const form = await superValidate<SettingsProfileFormSchema, FlashMessage>({ username: user.username }, zod(settingsProfileFormSchema));
 
   return { form, user };
 };
 
 export const actions: Actions = {
   default: async (event) => {
-    const { request, locals, cookies } = event;
+    const { request, locals, url, cookies } = event;
     const flashMessage = { status: FLASH_MESSAGE_STATUS.ERROR, text: "" };
+
+    isUserAuthenticated(locals, cookies, url);
 
     const minutes = await verifyRateLimiter(event, profileSettingsLimiter);
     if (minutes) {
@@ -43,7 +47,7 @@ export const actions: Actions = {
     }
 
     const { username } = form.data;
-    const { id: userId } = locals.user!;
+    const { id: userId } = locals.user;
 
     const existingUser = await getUserByUsername(locals.db, username);
     if (existingUser && existingUser.id !== userId) {
@@ -64,6 +68,6 @@ export const actions: Actions = {
     flashMessage.status = FLASH_MESSAGE_STATUS.SUCCESS;
     flashMessage.text = "Profile updated successfully";
 
-    redirect(route("/app/settings/profile"), flashMessage, cookies);
+    redirect(route("/settings/profile"), flashMessage, cookies);
   }
 };

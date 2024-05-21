@@ -1,19 +1,38 @@
 <script lang="ts">
-  import { Separator } from "$components/ui/separator";
+  import Bell from "lucide-svelte/icons/bell";
+  import CreditCard from "lucide-svelte/icons/credit-card";
+  import UserRound from "lucide-svelte/icons/user-round";
+  import Settings from "lucide-svelte/icons/settings";
+  import ShieldCheck from "lucide-svelte/icons/shield-check";
   import { SidebarSettingsNav } from "$components/app";
+  import { Separator } from "$components/ui/separator";
+  import { route } from "$lib/ROUTES";
 
   const sidebarNavItems = [
     {
       title: "Profile",
-      href: "/app/settings/profile"
+      href: route("/settings/profile"),
+      icon: UserRound
     },
     {
       title: "Account",
-      href: "/app/settings/account"
+      href: route("/settings/account"),
+      icon: Settings
+    },
+    {
+      title: "Security",
+      href: route("/settings/security"),
+      icon: ShieldCheck
     },
     {
       title: "Notifications",
-      href: "/app/settings/notifications"
+      href: route("/settings/notifications"),
+      icon: Bell
+    },
+    {
+      title: "Billing",
+      href: route("/settings/billing"),
+      icon: CreditCard
     }
   ];
 
