@@ -16,6 +16,7 @@ const config = {
       $components: "src/lib/components",
       $configs: "src/lib/configs",
       $constants: "src/lib/constants",
+      $enums: "src/lib/enums",
       $server: "src/lib/server",
       $stores: "src/lib/stores",
       $utils: "src/lib/utils",
