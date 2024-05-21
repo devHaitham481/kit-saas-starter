@@ -5,6 +5,7 @@ export type DbToken = InferSelectModel<typeof tokens>;
 export type DbInsertToken = InferInsertModel<typeof tokens>;
 export type DbUpdateToken = Partial<DbToken>;
 
+// TODO move this to enum folder
 export enum TOKEN_TYPE {
   EMAIL_CHANGE = "email_change",
   EMAIL_VERIFICATION = "email_verification",

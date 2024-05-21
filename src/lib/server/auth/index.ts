@@ -5,10 +5,9 @@ import { SESSION_EXPIRATION_TIME } from "$configs/fields-length";
 import { SESSION_COOKIE_NAME } from "$configs/cookies-names";
 import { GitHub, Google } from "arctic";
 import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from "$env/static/private";
+import { APP_URL } from "$configs/general";
 
-// TODO fix this!
-// const GOOGLE_REDIRECT_URL = dev? '' : '';
-const GOOGLE_REDIRECT_URI = "http://localhost:5173/auth/oauth/google/callback";
+const GOOGLE_REDIRECT_URI = `${APP_URL}/auth/oauth/google/callback`;
 
 export const githubOauth = new GitHub(GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET);
 export const googleOauth = new Google(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI);
